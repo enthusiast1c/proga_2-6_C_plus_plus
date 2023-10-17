@@ -6,7 +6,7 @@
 #define LEN 30
 #define Date 11
 
-// Структуры
+// Классы
 class Company {
 public:
     char* name;
@@ -54,7 +54,7 @@ void clean()  //Очистка потока
 
 // Основные функции
 /*-----------------------------------------------------------------------------*/
-//Инициализация структур
+//Инициализация классов
 Company InitCompany(char* name, char* found_date, char* address) { // инициализация компании
     Company com;
     if (strlen(name) == 0 || strlen(address) == 0) {
@@ -72,7 +72,7 @@ Company InitCompany(char* name, char* found_date, char* address) { // инициализа
     return com;
 }
 
-Soldier InitSoldier(char* name, char* draft_date, char* address) {
+Soldier InitSoldier(char* name, char* draft_date, char* address) { // инициализация солдата
     Soldier sold;
 
     if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
@@ -86,7 +86,7 @@ Soldier InitSoldier(char* name, char* draft_date, char* address) {
     return sold;
 }
 
-Weapon InitWeapon(char* name, Company company, int rel_year) {
+Weapon InitWeapon(char* name, Company company, int rel_year) { // инициализация оружия
     Weapon wea;
 
     if (strlen(name) == 0 || rel_year < 1000) {
@@ -100,7 +100,7 @@ Weapon InitWeapon(char* name, Company company, int rel_year) {
     return wea;
 }
 
-Control InitControl(char* operation, char* date, Weapon weapon, Soldier soldier) {
+Control InitControl(char* operation, char* date, Weapon weapon, Soldier soldier) { // инициализация контроля выдачи/сдачи
     Control ctrl;
 
     if (strlen(operation) == 0 || strlen(date) != Date - 1) {
@@ -116,7 +116,7 @@ Control InitControl(char* operation, char* date, Weapon weapon, Soldier soldier)
     return ctrl;
 }
 
-Armory InitArmory(Weapon weapon, Soldier soldier, Control operation, char* military) {
+Armory InitArmory(Weapon weapon, Soldier soldier, Control operation, char* military) { // инициализация класса
     if (strlen(military) == 0) {
         exit(-1);
     }
@@ -136,7 +136,7 @@ Armory InitArmory(Weapon weapon, Soldier soldier, Control operation, char* milit
     }
 }
 
-//Ввод структур
+//Ввод классов
 Company InputCompany() { // ввод компании
     char* name = (char*)calloc(LEN, sizeof(char));
     char* found_date = (char*)calloc(Date, sizeof(char));
@@ -177,7 +177,7 @@ Soldier InputSoldier() { // ввод солдата
     return sold;
 }
 
-Weapon InputWeapon(Company company) {
+Weapon InputWeapon(Company company) { // ввод оружия
     int rel_year;
     char* name = (char*)calloc(LEN, sizeof(char));
 
@@ -196,7 +196,7 @@ Weapon InputWeapon(Company company) {
     return wea;
 }
 
-Control InputControl(Weapon weapon, Soldier soldier) {
+Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
     char* operation = (char*)calloc(LEN, sizeof(char));
     char* date = (char*)calloc(Date, sizeof(char));
 
@@ -211,7 +211,7 @@ Control InputControl(Weapon weapon, Soldier soldier) {
     return ctrl;
 }
 
-Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) {
+Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
     char* military = (char*)calloc(LEN, sizeof(char));
 
     puts("Введите номер ячейки склада (Н-р: ячейка А3):");
@@ -221,7 +221,7 @@ Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) {
     return arm;
 }
 
-//Вывод структур
+//Вывод классов
 
 void OutputArmory(Armory armory) {
     puts("\nСписок складского оружия:");
@@ -240,21 +240,21 @@ void OutputArmory(Armory armory) {
 }
 
 //Дополнительные функции добавления
-Armory WeaponToArmory(Armory armory, Weapon weapon) {
+Armory WeaponToArmory(Armory armory, Weapon weapon) { // добавление оружия
     armory.Nweapons += 1;
     armory.weapons = (Weapon*)realloc(armory.weapons, sizeof(Weapon) * armory.Nweapons);
     armory.weapons[armory.Nweapons - 1] = weapon;
     return armory;
 }
 
-Armory SoldierToArmory(Armory armory, Soldier soldier) {
+Armory SoldierToArmory(Armory armory, Soldier soldier) { // добавление солдата
     armory.Nsoldiers += 1;
     armory.soldiers = (Soldier*)realloc(armory.soldiers, sizeof(Soldier) * armory.Nsoldiers);
     armory.soldiers[armory.Nsoldiers - 1] = soldier;
     return armory;
 }
 
-Armory OperationToArmory(Armory armory, Control operation) {
+Armory OperationToArmory(Armory armory, Control operation) { // добавление операций контроля
     armory.Noperations += 1;
     armory.operations = (Control*)realloc(armory.operations, sizeof(Control) * armory.Noperations);
     armory.operations[armory.Noperations - 1] = operation;
