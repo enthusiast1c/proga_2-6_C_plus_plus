@@ -45,7 +45,7 @@ public:
     void SetName(char* name) {
         this->name = name;
     }
-    void SetDate(char* date) {
+    void SetDate(char* found_date) {
         this->found_date = found_date;
     }
     void SetAddress(char* address) {
@@ -88,8 +88,8 @@ public:
     void SetName(char* name) {
         this->name = name;
     }
-    void SetYear(int year) {
-        this->rel_year = year;
+    void SetYear(int rel_year) {
+        this->rel_year = rel_year;
     }
 private:
     char* name;
@@ -129,8 +129,8 @@ public:
     void SetName(char* name) {
         this->name = name;
     }
-    void SetDate(char* date) {
-        this->draft_date = date;
+    void SetDate(char* draft_date) {
+        this->draft_date = draft_date;
     }
     void SetAddress(char* address) {
         this->address = address;
@@ -146,6 +146,8 @@ private:
     char* operation;
     char* date;
 public:
+    Control() {//конструктор без параметров
+    }
     Control(char* operation, char* date, Weapon weapon, Soldier soldier) { //конструктор с параметрами
         if (strlen(operation) == 0 || strlen(date) != Date - 1) {
             exit(-1);
@@ -165,7 +167,7 @@ public:
     char* GetDate() {
         return date;
     }
-    void SetOperation(char* move) {
+    void SetOperation(char* operation) {
         this->operation = operation;
     }
     void SetDate(char* date) {
