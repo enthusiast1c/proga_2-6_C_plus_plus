@@ -9,6 +9,30 @@
 // Классы
 class Company {
 public:
+    Company() {
+        char* name = (char*)calloc(LEN, sizeof(char));
+        strcpy(name, "Армия ПК");
+        char* found_date = (char*)calloc(Date, sizeof(char));
+        strcpy(found_date, "22.11.1234");
+        char* address = (char*)calloc(LEN, sizeof(char));
+        strcpy(address, "Воевая, 7");
+    }
+    Company(char* name, char* found_date, char* address) {
+        if (strlen(name) == 0 || strlen(address) == 0) {
+            exit(-1);
+        }
+        else if (strlen(found_date) != Date - 1) {
+            puts("Некорректная дата");
+            exit(-1);
+        }
+        else {
+            this->name = name;
+            this->found_date = found_date;
+            this->address = address;
+        }
+    }
+    ~Company(){
+    }
     char* name;
     char* found_date;
     char* address;
@@ -16,6 +40,25 @@ public:
 
 class Weapon {
 public:
+    Weapon() {
+    }
+    Weapon( Company company) {
+        strcpy(this->name, "FAMAS");
+        this->rel_year = 2000;
+        this->company = company;
+    }
+    Weapon(char* name, Company company, int rel_year) {
+        if (strlen(name) == 0 || rel_year < 1000) {
+            exit(-1);
+        }
+        else {
+            this->name = name;
+            this->company = company;
+            this->rel_year = rel_year;
+        }
+    }
+    ~Weapon() {
+    }
     char* name;
     Company company;
     int rel_year;
@@ -23,6 +66,25 @@ public:
 
 class Soldier {
 public:
+    Soldier() {
+    }
+    Soldier(char* name) {
+        this->name = name;
+        strcpy(this->draft_date, "11.12.1345");
+        strcpy(this->address, "Летная, 13");
+    }
+    Soldier(char* name, char* draft_date, char* address) {
+        if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
+            exit(-1);
+        }
+        else {
+            this->name = name;
+            this->draft_date = draft_date;
+            this->address = address;
+        }
+    }
+    ~Soldier(){
+    }
     char* name;
     char* draft_date;
     char* address;
@@ -30,21 +92,51 @@ public:
 
 class Control {
 public:
+    Control(char* operation, char* date, Weapon weapon, Soldier soldier) { 
+        if (strlen(operation) == 0 || strlen(date) != Date - 1) {
+            exit(-1);
+        }
+        else {
+            this->weapon = weapon;
+            this->soldier = soldier;
+            this->operation = operation;
+            this->date = date;
+        }
+    }
+    ~Control() {
+    }
     char* operation;
     char* date;
-    Weapon weapon;
-    Soldier soldier;
+    class Weapon weapon;
+    class Soldier soldier;
 };
 
 class Armory {
 public:
-    Weapon* weapons;
-    Soldier* soldiers;
-    Control* operations;
-    char* military;
     int Nweapons = 1;
     int Nsoldiers = 1;
     int Noperations = 1;
+    Armory(Weapon weapon, Soldier soldier, Control operation, char* military) {
+        if (strlen(military) == 0) {
+            exit(-1);
+        }
+        else {
+            this->military = military;
+
+            this->weapons = (Weapon*)malloc(sizeof(Weapon));
+            this->weapons[this->Nweapons - 1] = weapon;
+
+            this->operations = (Control*)malloc(sizeof(Control));
+            this->operations[this->Noperations - 1] = operation;
+
+            this->soldiers = (Soldier*)malloc(sizeof(Soldier));
+            this->soldiers[this->Nsoldiers - 1] = soldier;
+        }
+    }
+    class Weapon* weapons;
+    class Soldier* soldiers;
+    class Control* operations;
+    char* military;
 };
 
 void clean()  //Очистка потока
@@ -53,89 +145,6 @@ void clean()  //Очистка потока
 }
 
 // Основные функции
-/*-----------------------------------------------------------------------------*/
-//Инициализация классов
-Company InitCompany(char* name, char* found_date, char* address) { // инициализация компании
-    Company com;
-    if (strlen(name) == 0 || strlen(address) == 0) {
-        exit(-1);
-    }
-    else if (strlen(found_date) != Date - 1) {
-        puts("Некорректная дата");
-        exit(-1);
-    }
-    else {
-        com.name = name;
-        com.found_date = found_date;
-        com.address = address;
-    }
-    return com;
-}
-
-Soldier InitSoldier(char* name, char* draft_date, char* address) { // инициализация солдата
-    Soldier sold;
-
-    if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
-        exit(-1);
-    }
-    else {
-        sold.name = name;
-        sold.draft_date = draft_date;
-        sold.address = address;
-    }
-    return sold;
-}
-
-Weapon InitWeapon(char* name, Company company, int rel_year) { // инициализация оружия
-    Weapon wea;
-
-    if (strlen(name) == 0 || rel_year < 1000) {
-        exit(-1);
-    }
-    else {
-        wea.name = name;
-        wea.company = company;
-        wea.rel_year = rel_year;
-    }
-    return wea;
-}
-
-Control InitControl(char* operation, char* date, Weapon weapon, Soldier soldier) { // инициализация контроля выдачи/сдачи
-    Control ctrl;
-
-    if (strlen(operation) == 0 || strlen(date) != Date - 1) {
-        exit(-1);
-    }
-    else {
-        ctrl.weapon = weapon;
-        ctrl.soldier = soldier;
-        ctrl.operation = operation;
-        ctrl.date = date;
-    }
-
-    return ctrl;
-}
-
-Armory InitArmory(Weapon weapon, Soldier soldier, Control operation, char* military) { // инициализация класса
-    if (strlen(military) == 0) {
-        exit(-1);
-    }
-    else {
-        Armory arm;
-        arm.military = military;
-
-        arm.weapons = (Weapon*)malloc(sizeof(Weapon));
-        arm.weapons[arm.Nweapons - 1] = weapon;
-
-        arm.operations = (Control*)malloc(sizeof(Control));
-        arm.operations[arm.Noperations - 1] = operation;
-
-        arm.soldiers = (Soldier*)malloc(sizeof(Soldier));
-        arm.soldiers[arm.Nsoldiers - 1] = soldier;
-        return arm;
-    }
-}
-
 //Ввод классов
 Company InputCompany() { // ввод компании
     char* name = (char*)calloc(LEN, sizeof(char));
@@ -153,8 +162,7 @@ Company InputCompany() { // ввод компании
     puts("Введите адрес компании:");
     gets_s(address, LEN);
 
-    Company com = InitCompany(name, found_date, address);
-    return com;
+    return Company(name, found_date, address);
 }
 
 Soldier InputSoldier() { // ввод солдата 
@@ -173,8 +181,7 @@ Soldier InputSoldier() { // ввод солдата
     puts("Введите адрес прописки солдата:");
     gets_s(address, LEN);
 
-    Soldier sold = InitSoldier(name, draft_date, address);
-    return sold;
+    return Soldier(name, draft_date, address);
 }
 
 Weapon InputWeapon(Company company) { // ввод оружия
@@ -191,9 +198,8 @@ Weapon InputWeapon(Company company) { // ввод оружия
         }
     } while (rel_year < 1132);
     clean();
-
-    Weapon wea = InitWeapon(name, company, rel_year);
-    return wea;
+    
+    return Weapon(name, company, rel_year);
 }
 
 Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
@@ -207,8 +213,7 @@ Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/с
     puts("Введите дату совершения операции в формате ДД.ММ.ГГГГ:");
     gets_s(date, Date);
 
-    Control ctrl = InitControl(operation, date, weapon, soldier);
-    return ctrl;
+    return Control(operation, date, weapon, soldier);
 }
 
 Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
@@ -217,8 +222,7 @@ Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод 
     puts("Введите номер ячейки склада (Н-р: ячейка А3):");
     gets_s(military, LEN);
 
-    Armory arm = InitArmory(weapon, soldier, operation, military);
-    return arm;
+    return Armory(weapon, soldier, operation, military);
 }
 
 //Вывод классов
