@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -6,23 +6,23 @@
 #define LEN 30
 #define Date 11
 
-// Классы
+// РљР»Р°СЃСЃС‹
 class Company {
 public:
-    Company() {
+    Company() {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ
         char* name = (char*)calloc(LEN, sizeof(char));
-        strcpy(name, "Армия ПК");
+        strcpy(name, "РђСЂРјРёСЏ РџРљ");
         char* found_date = (char*)calloc(Date, sizeof(char));
         strcpy(found_date, "22.11.1234");
         char* address = (char*)calloc(LEN, sizeof(char));
-        strcpy(address, "Воевая, 7");
+        strcpy(address, "Р’РѕРµРІР°СЏ, 7");
     }
-    Company(char* name, char* found_date, char* address) {
+    Company(char* name, char* found_date, char* address) { //РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
         if (strlen(name) == 0 || strlen(address) == 0) {
             exit(-1);
         }
         else if (strlen(found_date) != Date - 1) {
-            puts("Некорректная дата");
+            puts("РќРµРєРѕСЂСЂРµРєС‚РЅР°СЏ РґР°С‚Р°");
             exit(-1);
         }
         else {
@@ -31,8 +31,27 @@ public:
             this->address = address;
         }
     }
-    ~Company(){
+    ~Company(){//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
     }
+    char* GetName() {
+        return name;
+    }
+    char* GetDate() {
+        return found_date;
+    }
+    char* GetAddress() {
+        return address;
+    }
+    void SetName(char* name) {
+        this->name = name;
+    }
+    void SetDate(char* date) {
+        this->found_date = found_date;
+    }
+    void SetAddress(char* address) {
+        this->address = address;
+    }
+private:
     char* name;
     char* found_date;
     char* address;
@@ -40,14 +59,15 @@ public:
 
 class Weapon {
 public:
-    Weapon() {
+    class Company company;
+    Weapon() {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ
     }
-    Weapon( Company company) {
+    Weapon( Company company) { //РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РѕРґРЅРёРј РїР°СЂР°РјРµС‚СЂРѕРј
         strcpy(this->name, "FAMAS");
         this->rel_year = 2000;
         this->company = company;
     }
-    Weapon(char* name, Company company, int rel_year) {
+    Weapon(char* name, Company company, int rel_year) {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
         if (strlen(name) == 0 || rel_year < 1000) {
             exit(-1);
         }
@@ -57,23 +77,35 @@ public:
             this->rel_year = rel_year;
         }
     }
-    ~Weapon() {
+    ~Weapon() {//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
     }
+    char* GetName() {
+        return name;
+    }
+    int GetYear() {
+        return rel_year;
+    }
+    void SetName(char* name) {
+        this->name = name;
+    }
+    void SetYear(int year) {
+        this->rel_year = year;
+    }
+private:
     char* name;
-    Company company;
     int rel_year;
 };
 
 class Soldier {
 public:
-    Soldier() {
+    Soldier() {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р±РµР· РїР°СЂР°РјРµС‚СЂРѕРІ
     }
-    Soldier(char* name) {
+    Soldier(char* name) {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РѕРґРЅРёРј РїР°СЂР°РјРµС‚СЂРѕРј
         this->name = name;
         strcpy(this->draft_date, "11.12.1345");
-        strcpy(this->address, "Летная, 13");
+        strcpy(this->address, "Р›РµС‚РЅР°СЏ, 13");
     }
-    Soldier(char* name, char* draft_date, char* address) {
+    Soldier(char* name, char* draft_date, char* address) {//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
         if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
             exit(-1);
         }
@@ -83,16 +115,38 @@ public:
             this->address = address;
         }
     }
-    ~Soldier(){
+    ~Soldier(){//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
     }
+    char* GetName() {
+        return name;
+    }
+    char* GetDate() {
+        return draft_date;
+    }
+    char* GetAddress() {
+        return address;
+    }
+    void SetName(char* name) {
+        this->name = name;
+    }
+    void SetDate(char* date) {
+        this->draft_date = date;
+    }
+    void SetAddress(char* address) {
+        this->address = address;
+    }
+private:
     char* name;
     char* draft_date;
     char* address;
 };
 
 class Control {
+private:
+    char* operation;
+    char* date;
 public:
-    Control(char* operation, char* date, Weapon weapon, Soldier soldier) { 
+    Control(char* operation, char* date, Weapon weapon, Soldier soldier) { //РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
         if (strlen(operation) == 0 || strlen(date) != Date - 1) {
             exit(-1);
         }
@@ -103,10 +157,20 @@ public:
             this->date = date;
         }
     }
-    ~Control() {
+    ~Control() {//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
     }
-    char* operation;
-    char* date;
+    char* GetOperation() {
+        return operation;
+    }
+    char* GetDate() {
+        return date;
+    }
+    void SetOperation(char* move) {
+        this->operation = operation;
+    }
+    void SetDate(char* date) {
+        this->date = date;
+    }
     class Weapon weapon;
     class Soldier soldier;
 };
@@ -116,7 +180,7 @@ public:
     int Nweapons = 1;
     int Nsoldiers = 1;
     int Noperations = 1;
-    Armory(Weapon weapon, Soldier soldier, Control operation, char* military) {
+    Armory(Weapon weapon, Soldier soldier, Control operation, char* military) { //РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё
         if (strlen(military) == 0) {
             exit(-1);
         }
@@ -133,68 +197,77 @@ public:
             this->soldiers[this->Nsoldiers - 1] = soldier;
         }
     }
+    ~Armory() {//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
+    }
+    char* GetMilitary() {
+        return military;
+    }
+    void SetMilitary(char* military) {
+        this->military = military;
+    }
     class Weapon* weapons;
     class Soldier* soldiers;
     class Control* operations;
+private:
     char* military;
 };
 
-void clean()  //Очистка потока
+void clean()  //РћС‡РёСЃС‚РєР° РїРѕС‚РѕРєР°
 {
     while (getchar() != '\n');
 }
 
-// Основные функции
-//Ввод классов
-Company InputCompany() { // ввод компании
+// РћСЃРЅРѕРІРЅС‹Рµ С„СѓРЅРєС†РёРё
+//Р’РІРѕРґ РєР»Р°СЃСЃРѕРІ
+Company InputCompany() { // РІРІРѕРґ РєРѕРјРїР°РЅРёРё
     char* name = (char*)calloc(LEN, sizeof(char));
     char* found_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
 
-    puts("Введите название компании:");
+    puts("Р’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РєРѕРјРїР°РЅРёРё:");
     gets_s(name, LEN);
     do {
         do {
-            puts("Введите дату основания в формате ДД.ММ.ГГГГ:");
+            puts("Р’РІРµРґРёС‚Рµ РґР°С‚Сѓ РѕСЃРЅРѕРІР°РЅРёСЏ РІ С„РѕСЂРјР°С‚Рµ Р”Р”.РњРњ.Р“Р“Р“Р“:");
             gets_s(found_date, Date);
         } while (found_date[0] < '0' || found_date[0] > '3' || found_date[1] < '0' || (found_date[1] > '1' && found_date[0] > '2') || found_date[1] > '9' || found_date[2] != '.' || found_date[3] < '0' || found_date[3] > '1' || found_date[4] < '0' || (found_date[4] > '0' && found_date[3] > '2') || found_date[4] > '9' || found_date[5] != '.' || found_date[6] < '0' || found_date[6] > '9' || found_date[7] < '0' || found_date[7] > '9' || found_date[8] < '0' || found_date[8] > '9' || found_date[9] < '0' || found_date[9] > '9');
     } while (strlen(found_date) != 10);
-    puts("Введите адрес компании:");
+    puts("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ РєРѕРјРїР°РЅРёРё:");
     gets_s(address, LEN);
 
     return Company(name, found_date, address);
 }
 
-Soldier InputSoldier() { // ввод солдата 
+Soldier InputSoldier() { // РІРІРѕРґ СЃРѕР»РґР°С‚Р° 
     char* name = (char*)calloc(LEN, sizeof(char));
     char* draft_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
 
-    puts("Введите Фамилия И.О. солдата:");
+    puts("Р’РІРµРґРёС‚Рµ Р¤Р°РјРёР»РёСЏ Р.Рћ. СЃРѕР»РґР°С‚Р°:");
     gets_s(name, LEN);
     do {
         do {
-            puts("Введите дату призыва солдата в формате ДД.ММ.ГГГГ:");
+            puts("Р’РІРµРґРёС‚Рµ РґР°С‚Сѓ РїСЂРёР·С‹РІР° СЃРѕР»РґР°С‚Р° РІ С„РѕСЂРјР°С‚Рµ Р”Р”.РњРњ.Р“Р“Р“Р“:");
             gets_s(draft_date, Date);
         } while (draft_date[0] < '0' || draft_date[0] > '3' || draft_date[1] < '0' || (draft_date[1] > '1' && draft_date[0] > '2') || draft_date[1] > '9' || draft_date[2] != '.' || draft_date[3] < '0' || (draft_date[3] == '1' && draft_date[4] > '2') || draft_date[3] > '1' || draft_date[4] < '0' || (draft_date[4] > '0' && draft_date[3] > '2') || draft_date[4] > '9' || draft_date[5] != '.' || draft_date[6] < '0' || draft_date[6] > '9' || draft_date[7] < '0' || draft_date[7] > '9' || draft_date[8] < '0' || draft_date[8] > '9' || draft_date[9] < '0' || draft_date[9] > '9');
     } while (strlen(draft_date) != 10);
-    puts("Введите адрес прописки солдата:");
+    puts("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ РїСЂРѕРїРёСЃРєРё СЃРѕР»РґР°С‚Р°:");
     gets_s(address, LEN);
 
     return Soldier(name, draft_date, address);
 }
 
-Weapon InputWeapon(Company company) { // ввод оружия
+Weapon InputWeapon(Company company) { // РІРІРѕРґ РѕСЂСѓР¶РёСЏ
     int rel_year;
     char* name = (char*)calloc(LEN, sizeof(char));
 
-    puts("Введите модель оружия:");
+    puts("Р’РІРµРґРёС‚Рµ РјРѕРґРµР»СЊ РѕСЂСѓР¶РёСЏ:");
     gets_s(name, LEN);
-    puts("Введите год выпуска:");
+    puts("Р’РІРµРґРёС‚Рµ РіРѕРґ РІС‹РїСѓСЃРєР°:");
     do {
         scanf("%d", &rel_year);
         if (rel_year < 1132) {
-            puts("Повторите попытку.");
+            puts("РџРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ.");
         }
     } while (rel_year < 1132);
     clean();
@@ -202,63 +275,63 @@ Weapon InputWeapon(Company company) { // ввод оружия
     return Weapon(name, company, rel_year);
 }
 
-Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
+Control InputControl(Weapon weapon, Soldier soldier) { // РІРІРѕРґ РєРѕРЅС‚СЂРѕР»СЏ РІС‹РґР°С‡Рё/СЃРґР°С‡Рё
     char* operation = (char*)calloc(LEN, sizeof(char));
     char* date = (char*)calloc(Date, sizeof(char));
 
     do {
-        puts("Введите тип совершённой операции (Выдача/Сдача):");
+        puts("Р’РІРµРґРёС‚Рµ С‚РёРї СЃРѕРІРµСЂС€С‘РЅРЅРѕР№ РѕРїРµСЂР°С†РёРё (Р’С‹РґР°С‡Р°/РЎРґР°С‡Р°):");
         gets_s(operation, LEN);
-    } while ((strcmp(operation, "Выдача") != 0 && strcmp(operation, "Сдача") != 0));
-    puts("Введите дату совершения операции в формате ДД.ММ.ГГГГ:");
+    } while ((strcmp(operation, "Р’С‹РґР°С‡Р°") != 0 && strcmp(operation, "РЎРґР°С‡Р°") != 0));
+    puts("Р’РІРµРґРёС‚Рµ РґР°С‚Сѓ СЃРѕРІРµСЂС€РµРЅРёСЏ РѕРїРµСЂР°С†РёРё РІ С„РѕСЂРјР°С‚Рµ Р”Р”.РњРњ.Р“Р“Р“Р“:");
     gets_s(date, Date);
 
     return Control(operation, date, weapon, soldier);
 }
 
-Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
+Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // РІРІРѕРґ РѕСЂСѓР¶РµР№РЅРѕРіРѕ СЃРєР»Р°РґР°
     char* military = (char*)calloc(LEN, sizeof(char));
 
-    puts("Введите номер ячейки склада (Н-р: ячейка А3):");
+    puts("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЏС‡РµР№РєРё СЃРєР»Р°РґР° (Рќ-СЂ: СЏС‡РµР№РєР° Рђ3):");
     gets_s(military, LEN);
 
     return Armory(weapon, soldier, operation, military);
 }
 
-//Вывод классов
+//Р’С‹РІРѕРґ РєР»Р°СЃСЃРѕРІ
 
 void OutputArmory(Armory armory) {
-    puts("\nСписок складского оружия:");
+    puts("\nРЎРїРёСЃРѕРє СЃРєР»Р°РґСЃРєРѕРіРѕ РѕСЂСѓР¶РёСЏ:");
     for (int i = 0; i < armory.Nweapons; i++) {
-        printf("|%d|Название \"%s\"\n   Год выпуска: %d\n   Компания: %s\n   Дата основания: %s\n", i + 1, armory.weapons[i].name, armory.weapons[i].rel_year, armory.weapons[i].company.name, armory.weapons[i].company.found_date);
+        printf("|%d|РќР°Р·РІР°РЅРёРµ \"%s\"\n   Р“РѕРґ РІС‹РїСѓСЃРєР°: %d\n   РљРѕРјРїР°РЅРёСЏ: %s\n   Р”Р°С‚Р° РѕСЃРЅРѕРІР°РЅРёСЏ: %s\n", i + 1, armory.weapons[i].GetName(), armory.weapons[i].GetYear(), armory.weapons[i].company.GetName(), armory.weapons[i].company.GetDate());
     }
-    puts("\nСписок призванных солдат:");
+    puts("\nРЎРїРёСЃРѕРє РїСЂРёР·РІР°РЅРЅС‹С… СЃРѕР»РґР°С‚:");
     for (int i = 0; i < armory.Nsoldiers; i++) {
-        printf("|%d|ФИО: %s\n   Дата призыва: %s\n   Прописка по адресу: %s\n", i + 1, armory.soldiers[i].name, armory.soldiers[i].draft_date, armory.soldiers[i].address);
+        printf("|%d|Р¤РРћ: %s\n   Р”Р°С‚Р° РїСЂРёР·С‹РІР°: %s\n   РџСЂРѕРїРёСЃРєР° РїРѕ Р°РґСЂРµСЃСѓ: %s\n", i + 1, armory.soldiers[i].GetName(), armory.soldiers[i].GetDate(), armory.soldiers[i].GetAddress());
     }
-    puts("\nОперации на складе:");
+    puts("\nРћРїРµСЂР°С†РёРё РЅР° СЃРєР»Р°РґРµ:");
     for (int i = 0; i < armory.Noperations; i++) {
-        printf("|%d|Оружие \"%s\"\n   Солдат: %s\n   Дата операции: %s\n   Вид операции: %s\n", i + 1, armory.operations[i].weapon.name, armory.operations[i].soldier.name, armory.operations[i].date, armory.operations[i].operation);
+        printf("|%d|РћСЂСѓР¶РёРµ \"%s\"\n   РЎРѕР»РґР°С‚: %s\n   Р”Р°С‚Р° РѕРїРµСЂР°С†РёРё: %s\n   Р’РёРґ РѕРїРµСЂР°С†РёРё: %s\n", i + 1, armory.operations[i].weapon.GetName(), armory.operations[i].soldier.GetName(), armory.operations[i].GetDate(), armory.operations[i].GetOperation());
     }
     puts("");
 }
 
-//Дополнительные функции добавления
-Armory WeaponToArmory(Armory armory, Weapon weapon) { // добавление оружия
+//Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РґРѕР±Р°РІР»РµРЅРёСЏ
+Armory WeaponToArmory(Armory armory, Weapon weapon) { // РґРѕР±Р°РІР»РµРЅРёРµ РѕСЂСѓР¶РёСЏ
     armory.Nweapons += 1;
     armory.weapons = (Weapon*)realloc(armory.weapons, sizeof(Weapon) * armory.Nweapons);
     armory.weapons[armory.Nweapons - 1] = weapon;
     return armory;
 }
 
-Armory SoldierToArmory(Armory armory, Soldier soldier) { // добавление солдата
+Armory SoldierToArmory(Armory armory, Soldier soldier) { // РґРѕР±Р°РІР»РµРЅРёРµ СЃРѕР»РґР°С‚Р°
     armory.Nsoldiers += 1;
     armory.soldiers = (Soldier*)realloc(armory.soldiers, sizeof(Soldier) * armory.Nsoldiers);
     armory.soldiers[armory.Nsoldiers - 1] = soldier;
     return armory;
 }
 
-Armory OperationToArmory(Armory armory, Control operation) { // добавление операций контроля
+Armory OperationToArmory(Armory armory, Control operation) { // РґРѕР±Р°РІР»РµРЅРёРµ РѕРїРµСЂР°С†РёР№ РєРѕРЅС‚СЂРѕР»СЏ
     armory.Noperations += 1;
     armory.operations = (Control*)realloc(armory.operations, sizeof(Control) * armory.Noperations);
     armory.operations[armory.Noperations - 1] = operation;
