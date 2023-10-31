@@ -27,22 +27,22 @@ int main()
         } while (choice < 1 || choice >5);
         switch (choice) {
         case 1:
-            OutputArmory(armory);
+            armory.OutputArmory();
             puts("Нажмите любую клавишу для продолжения...");
             _getch();
             break;
         case 2:
-            armory = SoldierToArmory(armory, InputSoldier());
+            armory.SoldierToArmory(InputSoldier());
             puts("Нажмите ENTER для добавления солдата в список.");
             _getch();
             break;
         case 3:
-            armory = WeaponToArmory(armory, InputWeapon(InputCompany()));
+            armory.WeaponToArmory(InputWeapon(InputCompany()));
             puts("Нажмите ENTER для добавления снаряжения в список.");
             _getch();
             break;
         case 4:
-            armory = OperationToArmory(armory, InputControl(InputWeapon(InputCompany()), InputSoldier()));
+            armory.OperationToArmory(InputControl(InputWeapon(InputCompany()), InputSoldier()));
             puts("Нажмите ENTER для добавления операции в список.");
             _getch();
             break;

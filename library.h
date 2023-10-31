@@ -210,6 +210,36 @@ public:
     class Weapon* weapons;
     class Soldier* soldiers;
     class Control* operations;
+    void WeaponToArmory(Weapon weapon) { // добавление оружия
+        this->Nweapons += 1;
+        this->weapons = (Weapon*)realloc(this->weapons, sizeof(Weapon) * this->Nweapons);
+        this->weapons[this->Nweapons - 1] = weapon;
+    }
+    void SoldierToArmory(Soldier soldier) { // добавление солдата
+        this->Nsoldiers += 1;
+        this->soldiers = (Soldier*)realloc(this->soldiers, sizeof(Soldier) * this->Nsoldiers);
+        this->soldiers[this->Nsoldiers - 1] = soldier;
+    }
+    void OperationToArmory(Control operation) { // добавление операций контроля
+        this->Noperations += 1;
+        this->operations = (Control*)realloc(this->operations, sizeof(Control) * this->Noperations);
+        this->operations[this->Noperations - 1] = operation;
+    }
+    void OutputArmory() {
+        puts("\nСписок складского оружия:");
+        for (int i = 0; i < this->Nweapons; i++) {
+            printf("|%d|Название \"%s\"\n   Год выпуска: %d\n   Компания: %s\n   Дата основания: %s\n", i + 1, this->weapons[i].GetName(), this->weapons[i].GetYear(), this->weapons[i].company.GetName(), this->weapons[i].company.GetDate());
+        }
+        puts("\nСписок призванных солдат:");
+        for (int i = 0; i < this->Nsoldiers; i++) {
+            printf("|%d|ФИО: %s\n   Дата призыва: %s\n   Прописка по адресу: %s\n", i + 1, this->soldiers[i].GetName(), this->soldiers[i].GetDate(), this->soldiers[i].GetAddress());
+        }
+        puts("\nОперации на складе:");
+        for (int i = 0; i < this->Noperations; i++) {
+            printf("|%d|Оружие \"%s\"\n   Солдат: %s\n   Дата операции: %s\n   Вид операции: %s\n", i + 1, this->operations[i].weapon.GetName(), this->operations[i].soldier.GetName(), this->operations[i].GetDate(), this->operations[i].GetOperation());
+        }
+        puts("");
+    }
 private:
     char* military;
 };
@@ -298,44 +328,4 @@ Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // вв�
     gets_s(military, LEN);
 
     return Armory(weapon, soldier, operation, military);
-}
-
-//Вывод классов
-
-void OutputArmory(Armory armory) {
-    puts("\nСписок складского оружия:");
-    for (int i = 0; i < armory.Nweapons; i++) {
-        printf("|%d|Название \"%s\"\n   Год выпуска: %d\n   Компания: %s\n   Дата основания: %s\n", i + 1, armory.weapons[i].GetName(), armory.weapons[i].GetYear(), armory.weapons[i].company.GetName(), armory.weapons[i].company.GetDate());
-    }
-    puts("\nСписок призванных солдат:");
-    for (int i = 0; i < armory.Nsoldiers; i++) {
-        printf("|%d|ФИО: %s\n   Дата призыва: %s\n   Прописка по адресу: %s\n", i + 1, armory.soldiers[i].GetName(), armory.soldiers[i].GetDate(), armory.soldiers[i].GetAddress());
-    }
-    puts("\nОперации на складе:");
-    for (int i = 0; i < armory.Noperations; i++) {
-        printf("|%d|Оружие \"%s\"\n   Солдат: %s\n   Дата операции: %s\n   Вид операции: %s\n", i + 1, armory.operations[i].weapon.GetName(), armory.operations[i].soldier.GetName(), armory.operations[i].GetDate(), armory.operations[i].GetOperation());
-    }
-    puts("");
-}
-
-//Дополнительные функции добавления
-Armory WeaponToArmory(Armory armory, Weapon weapon) { // добавление оружия
-    armory.Nweapons += 1;
-    armory.weapons = (Weapon*)realloc(armory.weapons, sizeof(Weapon) * armory.Nweapons);
-    armory.weapons[armory.Nweapons - 1] = weapon;
-    return armory;
-}
-
-Armory SoldierToArmory(Armory armory, Soldier soldier) { // добавление солдата
-    armory.Nsoldiers += 1;
-    armory.soldiers = (Soldier*)realloc(armory.soldiers, sizeof(Soldier) * armory.Nsoldiers);
-    armory.soldiers[armory.Nsoldiers - 1] = soldier;
-    return armory;
-}
-
-Armory OperationToArmory(Armory armory, Control operation) { // добавление операций контроля
-    armory.Noperations += 1;
-    armory.operations = (Control*)realloc(armory.operations, sizeof(Control) * armory.Noperations);
-    armory.operations[armory.Noperations - 1] = operation;
-    return armory;
 }
