@@ -25,28 +25,31 @@ int main()
             scanf("%d", &choice);
             clean();
         } while (choice < 1 || choice >5);
-        switch (choice) {
-        case 1:
+        if (choice == 1) {
             armory.OutputArmory();
             puts("Нажмите любую клавишу для продолжения...");
             _getch();
-            break;
-        case 2:
+        }
+        if (choice == 2) {
             armory.SoldierToArmory(InputSoldier());
             puts("Нажмите ENTER для добавления солдата в список.");
             _getch();
-            break;
-        case 3:
+        }
+        if (choice == 3) {
             armory.WeaponToArmory(InputWeapon(InputCompany()));
             puts("Нажмите ENTER для добавления снаряжения в список.");
             _getch();
-            break;
-        case 4:
-            armory.OperationToArmory(InputControl(InputWeapon(InputCompany()), InputSoldier()));
+        }
+        if (choice == 4) {
+            Weapon gun = InputWeapon(InputCompany());
+            Soldier sol = InputSoldier();
+            armory.WeaponToArmory(gun);
+            armory.SoldierToArmory(sol);
+            armory.OperationToArmory(InputControl(gun, sol));
             puts("Нажмите ENTER для добавления операции в список.");
             _getch();
-            break;
-        case 5:
+        }
+        if (choice == 5) {
             int yesno;
             do {
                 printf("Вы уверены, что хотите выйти?\n|1|Да\n|2|Нет\nВаш выбор: ");
@@ -55,7 +58,6 @@ int main()
             } while (yesno != 1 && yesno != 2);
             if (yesno == 1) {
                 exit = 1;
-                break;
             }
         }
     } while (exit == 0);

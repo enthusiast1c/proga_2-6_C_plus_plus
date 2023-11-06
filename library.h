@@ -61,18 +61,25 @@ class Weapon {
 private:
     char* name;
     int rel_year;
+    static int NumWeap;
 public:
     static const int LEN = 30;
     static const int Date = 11;
     class Company company;
-    Weapon() {//конструктор без параметров
+    static int getNumber() {
+        return NumWeap;
+    }
+    Weapon() {
+        NumWeap++;
     }
     Weapon( Company company) { //конструктор с одним параметром
+        NumWeap++;
         strcpy(this->name, "FAMAS");
         this->rel_year = 2000;
         this->company = company;
     }
     Weapon(char* name, Company company, int rel_year) {//конструктор с параметрами
+        NumWeap++;
         if (strlen(name) == 0 || rel_year < 1000) {
             exit(-1);
         }
@@ -97,23 +104,31 @@ public:
         this->rel_year = rel_year;
     }
 };
+int Weapon::NumWeap = -1;
 
 class Soldier {
 private:
     char* name;
     char* draft_date;
     char* address;
+    static int NumSold;
 public:
     static const int LEN = 30;
     static const int Date = 11;
-    Soldier() {//конструктор без параметров
+    static int getNumber() {
+        return NumSold;
+    }
+    Soldier() {
+        NumSold++;
     }
     Soldier(char* name) {//конструктор с одним параметром
+        NumSold++;
         this->name = name;
         strcpy(this->draft_date, "11.12.1345");
         strcpy(this->address, "Летная, 13");
     }
     Soldier(char* name, char* draft_date, char* address) {//конструктор с параметрами
+        NumSold++;
         if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
             exit(-1);
         }
@@ -144,19 +159,26 @@ public:
         this->address = address;
     }
 };
+int Soldier::NumSold = -1;
 
 class Control {
 private:
     char* operation;
     char* date;
+    static int NumOper;
 public:
     static const int LEN = 30;
     static const int Date = 11;
     class Weapon weapon;
     class Soldier soldier;
-    Control() {//конструктор без параметров
+    static int getNumber() {
+        return NumOper;
+    }
+    Control() {
+        NumOper++;
     }
     Control(char* operation, char* date, Weapon weapon, Soldier soldier) { //конструктор с параметрами
+        NumOper++;
         if (strlen(operation) == 0 || strlen(date) != Date - 1) {
             exit(-1);
         }
@@ -182,6 +204,7 @@ public:
         this->date = date;
     }
 };
+int Control::NumOper = 0;
 
 class Armory {
 private:
@@ -195,6 +218,8 @@ public:
     class Weapon* weapons;
     class Soldier* soldiers;
     class Control* operations;
+    Armory(){//конструктор без параметров
+    }
     Armory(Weapon weapon, Soldier soldier, Control operation, char* military) { //конструктор с параметрами
         if (strlen(military) == 0) {
             exit(-1);
@@ -236,15 +261,15 @@ public:
         this->operations[this->Noperations - 1] = operation;
     }
     void OutputArmory() {
-        puts("\nСписок складского оружия:");
+        printf("\nСписок складского оружия:\nВсего на складе: |%d|\n ",Weapon::getNumber());
         for (int i = 0; i < this->Nweapons; i++) {
             printf("|%d|Название \"%s\"\n   Год выпуска: %d\n   Компания: %s\n   Дата основания: %s\n", i + 1, this->weapons[i].GetName(), this->weapons[i].GetYear(), this->weapons[i].company.GetName(), this->weapons[i].company.GetDate());
         }
-        puts("\nСписок призванных солдат:");
+        printf("\nСписок призванных солдат:\nВсего на складе: |%d|\n ", Soldier::getNumber());
         for (int i = 0; i < this->Nsoldiers; i++) {
             printf("|%d|ФИО: %s\n   Дата призыва: %s\n   Прописка по адресу: %s\n", i + 1, this->soldiers[i].GetName(), this->soldiers[i].GetDate(), this->soldiers[i].GetAddress());
         }
-        puts("\nОперации на складе:");
+        printf("\nОперации на складе:\nВсего на складе: |%d|\n ", Control::getNumber());
         for (int i = 0; i < this->Noperations; i++) {
             printf("|%d|Оружие \"%s\"\n   Солдат: %s\n   Дата операции: %s\n   Вид операции: %s\n", i + 1, this->operations[i].weapon.GetName(), this->operations[i].soldier.GetName(), this->operations[i].GetDate(), this->operations[i].GetOperation());
         }
@@ -260,8 +285,8 @@ void clean()  //Очистка потока
 // Основные функции
 //Ввод классов
 Company InputCompany() {// ввод компании
-    int LEN = 30;
-    int Date = 11;
+    int LEN = Company::LEN;
+    int Date = Company::Date;
     char* name = (char*)calloc(LEN, sizeof(char));
     char* found_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
@@ -281,8 +306,8 @@ Company InputCompany() {// ввод компании
 }
 
 Soldier InputSoldier() { // ввод солдата 
-    int LEN = 30;
-    int Date = 11;
+    int LEN = Soldier::LEN;
+    int Date = Soldier::Date;
     char* name = (char*)calloc(LEN, sizeof(char));
     char* draft_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
@@ -302,8 +327,8 @@ Soldier InputSoldier() { // ввод солдата
 }
 
 Weapon InputWeapon(Company company) { // ввод оружия
-    int LEN = 30;
-    int Date = 11;
+    int LEN = Weapon::LEN;
+    int Date = Weapon::Date;
     int rel_year;
     char* name = (char*)calloc(LEN, sizeof(char));
 
@@ -322,8 +347,8 @@ Weapon InputWeapon(Company company) { // ввод оружия
 }
 
 Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
-    int LEN = 30;
-    int Date = 11;
+    int LEN = Control::LEN;
+    int Date = Control::Date;
     char* operation = (char*)calloc(LEN, sizeof(char));
     char* date = (char*)calloc(Date, sizeof(char));
 
@@ -338,8 +363,8 @@ Control InputControl(Weapon weapon, Soldier soldier) { // ввод контро�
 }
 
 Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
-    int LEN = 30;
-    int Date = 11;
+    int LEN = Armory::LEN;
+    int Date = Armory::Date;
     char* military = (char*)calloc(LEN, sizeof(char));
 
     puts("Введите номер ячейки склада (Н-р: ячейка А3):");
