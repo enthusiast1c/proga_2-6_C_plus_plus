@@ -3,29 +3,24 @@
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
+using namespace std;
 
 // Классы
 class Company {
 private:
-    char* name;
-    char* found_date;
-    char* address;
+    string name;
+    string found_date;
+    string address;
 public:
     static const int LEN = 30;
     static const int Date = 11;
     Company() {//конструктор без параметров
-        char* name = (char*)calloc(LEN, sizeof(char));
-        strcpy(name, "Армия ПК");
-        char* found_date = (char*)calloc(Date, sizeof(char));
-        strcpy(found_date, "22.11.1234");
-        char* address = (char*)calloc(LEN, sizeof(char));
-        strcpy(address, "Воевая, 7");
     }
-    Company(char* name, char* found_date, char* address) { //конструктор с параметрами
-        if (strlen(name) == 0 || strlen(address) == 0) {
+    Company(string name, string found_date, string address) { //конструктор с параметрами
+        if (name.empty() || address.empty()) {
             exit(-1);
         }
-        else if (strlen(found_date) != Date - 1) {
+        else if (found_date.length() != Date - 1) {
             puts("Некорректная дата");
             exit(-1);
         }
@@ -37,29 +32,29 @@ public:
     }
     ~Company(){//деструктор
     }
-    char* GetName() {
+    string GetName() {
         return name;
     }
-    char* GetDate() {
+    string GetDate() {
         return found_date;
     }
-    char* GetAddress() {
+    string GetAddress() {
         return address;
     }
-    void SetName(char* name) {
+    string SetName(string name) {
         this->name = name;
     }
-    void SetDate(char* found_date) {
+    void SetDate(string found_date) {
         this->found_date = found_date;
     }
-    void SetAddress(char* address) {
+    void SetAddress(string address) {
         this->address = address;
     }
 };
 
 class Weapon {
 private:
-    char* name;
+    string name;
     int rel_year;
     static int NumWeap;
 public:
@@ -74,13 +69,12 @@ public:
     }
     Weapon( Company company) { //конструктор с одним параметром
         NumWeap++;
-        strcpy(this->name, "FAMAS");
         this->rel_year = 2000;
         this->company = company;
     }
-    Weapon(char* name, Company company, int rel_year) {//конструктор с параметрами
+    Weapon(string name, Company company, int rel_year) {//конструктор с параметрами
         NumWeap++;
-        if (strlen(name) == 0 || rel_year < 1000) {
+        if (name.empty() || rel_year < 1000) {
             exit(-1);
         }
         else {
@@ -91,13 +85,13 @@ public:
     }
     ~Weapon() {//деструктор
     }
-    char* GetName() {
+    string GetName() {
         return name;
     }
     int GetYear() {
         return rel_year;
     }
-    void SetName(char* name) {
+    void SetName(string name) {
         this->name = name;
     }
     void SetYear(int rel_year) {
@@ -108,9 +102,9 @@ int Weapon::NumWeap = -1;
 
 class Soldier {
 private:
-    char* name;
-    char* draft_date;
-    char* address;
+    string name;
+    string draft_date;
+    string address;
     static int NumSold;
 public:
     static const int LEN = 30;
@@ -121,15 +115,15 @@ public:
     Soldier() {
         NumSold++;
     }
-    Soldier(char* name) {//конструктор с одним параметром
+    Soldier(string name) {//конструктор с одним параметром
         NumSold++;
         this->name = name;
-        strcpy(this->draft_date, "11.12.1345");
-        strcpy(this->address, "Летная, 13");
+        draft_date = "11.12.1345";
+        address = "Летная, 13";
     }
-    Soldier(char* name, char* draft_date, char* address) {//конструктор с параметрами
+    Soldier(string name, string draft_date, string address) {//конструктор с параметрами
         NumSold++;
-        if (strlen(name) == 0 || strlen(draft_date) != Date - 1 || strlen(address) == 0) {
+        if (name.empty() || draft_date.length() != Date - 1 || address.empty()) {
             exit(-1);
         }
         else {
@@ -140,22 +134,22 @@ public:
     }
     ~Soldier(){//деструктор
     }
-    char* GetName() {
+    string GetName() {
         return name;
     }
-    char* GetDate() {
+    string GetDate() {
         return draft_date;
     }
-    char* GetAddress() {
+    string GetAddress() {
         return address;
     }
-    void SetName(char* name) {
+    void SetName(string name) {
         this->name = name;
     }
-    void SetDate(char* draft_date) {
+    void SetDate(string draft_date) {
         this->draft_date = draft_date;
     }
-    void SetAddress(char* address) {
+    void SetAddress(string address) {
         this->address = address;
     }
 };
@@ -163,8 +157,8 @@ int Soldier::NumSold = -1;
 
 class Control {
 private:
-    char* operation;
-    char* date;
+    string operation;
+    string date;
     static int NumOper;
 public:
     static const int LEN = 30;
@@ -177,9 +171,9 @@ public:
     Control() {
         NumOper++;
     }
-    Control(char* operation, char* date, Weapon weapon, Soldier soldier) { //конструктор с параметрами
+    Control(string operation, string date, Weapon weapon, Soldier soldier) { //конструктор с параметрами
         NumOper++;
-        if (strlen(operation) == 0 || strlen(date) != Date - 1) {
+        if (operation.empty() || date.length() != Date - 1) {
             exit(-1);
         }
         else {
@@ -191,16 +185,16 @@ public:
     }
     ~Control() {//деструктор
     }
-    char* GetOperation() {
+    string GetOperation() {
         return operation;
     }
-    char* GetDate() {
+    string GetDate() {
         return date;
     }
-    void SetOperation(char* operation) {
+    void SetOperation(string operation) {
         this->operation = operation;
     }
-    void SetDate(char* date) {
+    void SetDate(string date) {
         this->date = date;
     }
 };
@@ -208,7 +202,7 @@ int Control::NumOper = 0;
 
 class Armory {
 private:
-    char* military;
+    string military;
 public:
     static const int LEN = 30;
     static const int Date = 11;
@@ -220,8 +214,8 @@ public:
     class Control* operations;
     Armory(){//конструктор без параметров
     }
-    Armory(Weapon weapon, Soldier soldier, Control operation, char* military) { //конструктор с параметрами
-        if (strlen(military) == 0) {
+    Armory(Weapon weapon, Soldier soldier, Control operation, string military) { //конструктор с параметрами
+        if (military.empty()) {
             exit(-1);
         }
         else {
@@ -239,10 +233,10 @@ public:
     }
     ~Armory() {//деструктор
     }
-    char* GetMilitary() {
+    string GetMilitary() {
         return military;
     }
-    void SetMilitary(char* military) {
+    void SetMilitary(string military) {
         this->military = military;
     }
     void WeaponToArmory(Weapon weapon) { // добавление оружия
@@ -287,42 +281,44 @@ void clean()  //Очистка потока
 Company InputCompany() {// ввод компании
     int LEN = Company::LEN;
     int Date = Company::Date;
-    char* name = (char*)calloc(LEN, sizeof(char));
-    char* found_date = (char*)calloc(Date, sizeof(char));
-    char* address = (char*)calloc(LEN, sizeof(char));
+    string name;
+    string found_date;
+    string address;
 
     puts("Введите название компании:");
-    gets_s(name, LEN);
+    cin >> name;
+    clean();
     do {
         do {
             puts("Введите дату основания в формате ДД.ММ.ГГГГ:");
-            gets_s(found_date, Date);
+            cin >> found_date;
         } while (found_date[0] < '0' || found_date[0] > '3' || found_date[1] < '0' || (found_date[1] > '1' && found_date[0] > '2') || found_date[1] > '9' || found_date[2] != '.' || found_date[3] < '0' || found_date[3] > '1' || found_date[4] < '0' || (found_date[4] > '0' && found_date[3] > '2') || found_date[4] > '9' || found_date[5] != '.' || found_date[6] < '0' || found_date[6] > '9' || found_date[7] < '0' || found_date[7] > '9' || found_date[8] < '0' || found_date[8] > '9' || found_date[9] < '0' || found_date[9] > '9');
-    } while (strlen(found_date) != 10);
+    } while (found_date.length() != 10);
     puts("Введите адрес компании:");
-    gets_s(address, LEN);
-
+    cin >> address;
+    clean();
     return Company(name, found_date, address);
 }
 
 Soldier InputSoldier() { // ввод солдата 
     int LEN = Soldier::LEN;
     int Date = Soldier::Date;
-    char* name = (char*)calloc(LEN, sizeof(char));
-    char* draft_date = (char*)calloc(Date, sizeof(char));
-    char* address = (char*)calloc(LEN, sizeof(char));
+    string name;
+    string draft_date;
+    string address;
 
     puts("Введите Фамилия И.О. солдата:");
-    gets_s(name, LEN);
+    cin >> name;
+    clean();
     do {
         do {
             puts("Введите дату призыва солдата в формате ДД.ММ.ГГГГ:");
-            gets_s(draft_date, Date);
+            cin >> draft_date;
         } while (draft_date[0] < '0' || draft_date[0] > '3' || draft_date[1] < '0' || (draft_date[1] > '1' && draft_date[0] > '2') || draft_date[1] > '9' || draft_date[2] != '.' || draft_date[3] < '0' || (draft_date[3] == '1' && draft_date[4] > '2') || draft_date[3] > '1' || draft_date[4] < '0' || (draft_date[4] > '0' && draft_date[3] > '2') || draft_date[4] > '9' || draft_date[5] != '.' || draft_date[6] < '0' || draft_date[6] > '9' || draft_date[7] < '0' || draft_date[7] > '9' || draft_date[8] < '0' || draft_date[8] > '9' || draft_date[9] < '0' || draft_date[9] > '9');
-    } while (strlen(draft_date) != 10);
+    } while (draft_date.length() != 10);
     puts("Введите адрес прописки солдата:");
-    gets_s(address, LEN);
-
+    cin >> address;
+    clean();
     return Soldier(name, draft_date, address);
 }
 
@@ -330,10 +326,11 @@ Weapon InputWeapon(Company company) { // ввод оружия
     int LEN = Weapon::LEN;
     int Date = Weapon::Date;
     int rel_year;
-    char* name = (char*)calloc(LEN, sizeof(char));
+    string name;
 
     puts("Введите модель оружия:");
-    gets_s(name, LEN);
+    cin >> name;
+    clean();
     puts("Введите год выпуска:");
     do {
         scanf("%d", &rel_year);
@@ -349,26 +346,27 @@ Weapon InputWeapon(Company company) { // ввод оружия
 Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
     int LEN = Control::LEN;
     int Date = Control::Date;
-    char* operation = (char*)calloc(LEN, sizeof(char));
-    char* date = (char*)calloc(Date, sizeof(char));
+    string operation;
+    string date;
 
     do {
         puts("Введите тип совершённой операции (Выдача/Сдача):");
-        gets_s(operation, LEN);
-    } while ((strcmp(operation, "Выдача") != 0 && strcmp(operation, "Сдача") != 0));
+        cin >> operation;
+        clean();
+    } while ((operation != "Выдача") && (operation != "Сдача"));
     puts("Введите дату совершения операции в формате ДД.ММ.ГГГГ:");
-    gets_s(date, Date);
-
+    cin >> date;
+    clean();
     return Control(operation, date, weapon, soldier);
 }
 
 Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
     int LEN = Armory::LEN;
     int Date = Armory::Date;
-    char* military = (char*)calloc(LEN, sizeof(char));
+    string military;
 
     puts("Введите номер ячейки склада (Н-р: ячейка А3):");
-    gets_s(military, LEN);
-
+    cin >> military;
+    clean();
     return Armory(weapon, soldier, operation, military);
 }
