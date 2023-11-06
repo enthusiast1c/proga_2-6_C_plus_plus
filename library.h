@@ -3,12 +3,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
-#define LEN 30
-#define Date 11
 
 // Классы
 class Company {
+private:
+    char* name;
+    char* found_date;
+    char* address;
 public:
+    static const int LEN = 30;
+    static const int Date = 11;
     Company() {//конструктор без параметров
         char* name = (char*)calloc(LEN, sizeof(char));
         strcpy(name, "Армия ПК");
@@ -51,14 +55,15 @@ public:
     void SetAddress(char* address) {
         this->address = address;
     }
-private:
-    char* name;
-    char* found_date;
-    char* address;
 };
 
 class Weapon {
+private:
+    char* name;
+    int rel_year;
 public:
+    static const int LEN = 30;
+    static const int Date = 11;
     class Company company;
     Weapon() {//конструктор без параметров
     }
@@ -91,13 +96,16 @@ public:
     void SetYear(int rel_year) {
         this->rel_year = rel_year;
     }
-private:
-    char* name;
-    int rel_year;
 };
 
 class Soldier {
+private:
+    char* name;
+    char* draft_date;
+    char* address;
 public:
+    static const int LEN = 30;
+    static const int Date = 11;
     Soldier() {//конструктор без параметров
     }
     Soldier(char* name) {//конструктор с одним параметром
@@ -135,10 +143,6 @@ public:
     void SetAddress(char* address) {
         this->address = address;
     }
-private:
-    char* name;
-    char* draft_date;
-    char* address;
 };
 
 class Control {
@@ -146,6 +150,10 @@ private:
     char* operation;
     char* date;
 public:
+    static const int LEN = 30;
+    static const int Date = 11;
+    class Weapon weapon;
+    class Soldier soldier;
     Control() {//конструктор без параметров
     }
     Control(char* operation, char* date, Weapon weapon, Soldier soldier) { //конструктор с параметрами
@@ -173,15 +181,20 @@ public:
     void SetDate(char* date) {
         this->date = date;
     }
-    class Weapon weapon;
-    class Soldier soldier;
 };
 
 class Armory {
+private:
+    char* military;
 public:
+    static const int LEN = 30;
+    static const int Date = 11;
     int Nweapons = 1;
     int Nsoldiers = 1;
     int Noperations = 1;
+    class Weapon* weapons;
+    class Soldier* soldiers;
+    class Control* operations;
     Armory(Weapon weapon, Soldier soldier, Control operation, char* military) { //конструктор с параметрами
         if (strlen(military) == 0) {
             exit(-1);
@@ -207,9 +220,6 @@ public:
     void SetMilitary(char* military) {
         this->military = military;
     }
-    class Weapon* weapons;
-    class Soldier* soldiers;
-    class Control* operations;
     void WeaponToArmory(Weapon weapon) { // добавление оружия
         this->Nweapons += 1;
         this->weapons = (Weapon*)realloc(this->weapons, sizeof(Weapon) * this->Nweapons);
@@ -240,8 +250,6 @@ public:
         }
         puts("");
     }
-private:
-    char* military;
 };
 
 void clean()  //Очистка потока
@@ -251,7 +259,9 @@ void clean()  //Очистка потока
 
 // Основные функции
 //Ввод классов
-Company InputCompany() { // ввод компании
+Company InputCompany() {// ввод компании
+    int LEN = 30;
+    int Date = 11;
     char* name = (char*)calloc(LEN, sizeof(char));
     char* found_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
@@ -271,6 +281,8 @@ Company InputCompany() { // ввод компании
 }
 
 Soldier InputSoldier() { // ввод солдата 
+    int LEN = 30;
+    int Date = 11;
     char* name = (char*)calloc(LEN, sizeof(char));
     char* draft_date = (char*)calloc(Date, sizeof(char));
     char* address = (char*)calloc(LEN, sizeof(char));
@@ -290,6 +302,8 @@ Soldier InputSoldier() { // ввод солдата
 }
 
 Weapon InputWeapon(Company company) { // ввод оружия
+    int LEN = 30;
+    int Date = 11;
     int rel_year;
     char* name = (char*)calloc(LEN, sizeof(char));
 
@@ -308,6 +322,8 @@ Weapon InputWeapon(Company company) { // ввод оружия
 }
 
 Control InputControl(Weapon weapon, Soldier soldier) { // ввод контроля выдачи/сдачи
+    int LEN = 30;
+    int Date = 11;
     char* operation = (char*)calloc(LEN, sizeof(char));
     char* date = (char*)calloc(Date, sizeof(char));
 
@@ -322,6 +338,8 @@ Control InputControl(Weapon weapon, Soldier soldier) { // ввод контро�
 }
 
 Armory InputArmory(Weapon weapon, Soldier soldier, Control operation) { // ввод оружейного склада
+    int LEN = 30;
+    int Date = 11;
     char* military = (char*)calloc(LEN, sizeof(char));
 
     puts("Введите номер ячейки склада (Н-р: ячейка А3):");
