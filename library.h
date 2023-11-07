@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
+#include <vector>
 using namespace std;
 
 // Классы
@@ -209,9 +210,9 @@ public:
     int Nweapons = 1;
     int Nsoldiers = 1;
     int Noperations = 1;
-    class Weapon* weapons;
-    class Soldier* soldiers;
-    class Control* operations;
+    vector <Weapon> weapons;
+    vector <Soldier> soldiers;
+    vector <Control> operations;
     Armory(){//конструктор без параметров
     }
     Armory(Weapon weapon, Soldier soldier, Control operation, string military) { //конструктор с параметрами
@@ -220,15 +221,9 @@ public:
         }
         else {
             this->military = military;
-
-            this->weapons = (Weapon*)malloc(sizeof(Weapon));
-            this->weapons[this->Nweapons - 1] = weapon;
-
-            this->operations = (Control*)malloc(sizeof(Control));
-            this->operations[this->Noperations - 1] = operation;
-
-            this->soldiers = (Soldier*)malloc(sizeof(Soldier));
-            this->soldiers[this->Nsoldiers - 1] = soldier;
+            this->weapons.push_back(weapon);
+            this->soldiers.push_back(soldier);
+            this->operations.push_back(operation);
         }
     }
     ~Armory() {//деструктор
@@ -241,31 +236,28 @@ public:
     }
     void WeaponToArmory(Weapon weapon) { // добавление оружия
         this->Nweapons += 1;
-        this->weapons = (Weapon*)realloc(this->weapons, sizeof(Weapon) * this->Nweapons);
-        this->weapons[this->Nweapons - 1] = weapon;
+        this->weapons.push_back(weapon);
     }
     void SoldierToArmory(Soldier soldier) { // добавление солдата
         this->Nsoldiers += 1;
-        this->soldiers = (Soldier*)realloc(this->soldiers, sizeof(Soldier) * this->Nsoldiers);
-        this->soldiers[this->Nsoldiers - 1] = soldier;
+        this->soldiers.push_back(soldier);
     }
     void OperationToArmory(Control operation) { // добавление операций контроля
         this->Noperations += 1;
-        this->operations = (Control*)realloc(this->operations, sizeof(Control) * this->Noperations);
-        this->operations[this->Noperations - 1] = operation;
+        this->operations.push_back(operation);
     }
     void OutputArmory() {
-        printf("\nСписок складского оружия:\nВсего на складе: |%d|\n ",Weapon::getNumber());
-        for (int i = 0; i < this->Nweapons; i++) {
-            printf("|%d|Название \"%s\"\n   Год выпуска: %d\n   Компания: %s\n   Дата основания: %s\n", i + 1, this->weapons[i].GetName(), this->weapons[i].GetYear(), this->weapons[i].company.GetName(), this->weapons[i].company.GetDate());
+        printf("\n\nСписок складского оружия:\nВсего на складе: |%d|\n",Weapon::getNumber());
+        for (int i = 0, j = 1; i < this->Nweapons; i++) {
+            cout << "\n|" << j++ << "|Название: " << this->weapons.at(i).GetName() << "\n   Год выпуска: " << this->weapons.at(i).GetYear() << "\n   Компания: " << this->weapons.at(i).company.GetName() << "\n   Дата основания: " << this->weapons.at(i).company.GetDate();
         }
-        printf("\nСписок призванных солдат:\nВсего на складе: |%d|\n ", Soldier::getNumber());
-        for (int i = 0; i < this->Nsoldiers; i++) {
-            printf("|%d|ФИО: %s\n   Дата призыва: %s\n   Прописка по адресу: %s\n", i + 1, this->soldiers[i].GetName(), this->soldiers[i].GetDate(), this->soldiers[i].GetAddress());
+        printf("\n\nСписок призванных солдат:\nВсего на складе: |%d|\n", Soldier::getNumber());
+        for (int i = 0, j = 1; i < this->Nsoldiers; i++) {
+            cout << "\n|" << j++ << "|ФИО: " << this->soldiers.at(i).GetName() << "\n   Дата призыва: " << this->soldiers.at(i).GetDate() + "\n   Прописка по адресу: " << this->soldiers.at(i).GetAddress();
         }
-        printf("\nОперации на складе:\nВсего на складе: |%d|\n ", Control::getNumber());
-        for (int i = 0; i < this->Noperations; i++) {
-            printf("|%d|Оружие \"%s\"\n   Солдат: %s\n   Дата операции: %s\n   Вид операции: %s\n", i + 1, this->operations[i].weapon.GetName(), this->operations[i].soldier.GetName(), this->operations[i].GetDate(), this->operations[i].GetOperation());
+        printf("\n\nОперации на складе:\nВсего на складе: |%d|\n", Control::getNumber());
+        for (int i = 0, j = 1; i < this->Noperations; i++) {
+            cout << "\n|" << j++ << "|Оружие: " << this->operations.at(i).weapon.GetName() << "\n   Солдат: " << this->operations.at(i).soldier.GetName() << "\n   Дата операции: " << this->operations.at(i).GetDate() << "\n   Вид операции: " << this->operations.at(i).GetOperation();
         }
         puts("");
     }
