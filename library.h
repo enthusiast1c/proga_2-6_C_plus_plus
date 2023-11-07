@@ -247,15 +247,15 @@ public:
         this->operations.push_back(operation);
     }
     void OutputArmory() {
-        printf("\n\nСписок складского оружия:\nВсего на складе: |%d|\n",Weapon::getNumber());
+        printf("\n\nСписок складского оружия:\nВсего на складе: |%d|",Weapon::getNumber());
         for (int i = 0, j = 1; i < this->Nweapons; i++) {
             cout << "\n|" << j++ << "|Название: " << this->weapons.at(i).GetName() << "\n   Год выпуска: " << this->weapons.at(i).GetYear() << "\n   Компания: " << this->weapons.at(i).company.GetName() << "\n   Дата основания: " << this->weapons.at(i).company.GetDate();
         }
-        printf("\n\nСписок призванных солдат:\nВсего на складе: |%d|\n", Soldier::getNumber());
+        printf("\n\nСписок призванных солдат:\nВсего на складе: |%d|", Soldier::getNumber());
         for (int i = 0, j = 1; i < this->Nsoldiers; i++) {
             cout << "\n|" << j++ << "|ФИО: " << this->soldiers.at(i).GetName() << "\n   Дата призыва: " << this->soldiers.at(i).GetDate() + "\n   Прописка по адресу: " << this->soldiers.at(i).GetAddress();
         }
-        printf("\n\nОперации на складе:\nВсего на складе: |%d|\n", Control::getNumber());
+        printf("\n\nОперации на складе:\nВсего на складе: |%d|", Control::getNumber());
         for (int i = 0, j = 1; i < this->Noperations; i++) {
             cout << "\n|" << j++ << "|Оружие: " << this->operations.at(i).weapon.GetName() << "\n   Солдат: " << this->operations.at(i).soldier.GetName() << "\n   Дата операции: " << this->operations.at(i).GetDate() << "\n   Вид операции: " << this->operations.at(i).GetOperation();
         }
