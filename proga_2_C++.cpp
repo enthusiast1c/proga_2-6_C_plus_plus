@@ -36,16 +36,52 @@ int main()
             _getch();
         }
         if (choice == 3) {
-            armory.WeaponToArmory(InputWeapon(InputCompany()));
+            Weapon gun = InputWeapon(InputCompany());
+            armory + gun;
             puts("Нажмите ENTER для добавления снаряжения в список.");
             _getch();
         }
         if (choice == 4) {
-            Weapon gun = InputWeapon(InputCompany());
-            Soldier sol = InputSoldier();
-            armory.WeaponToArmory(gun);
-            armory.SoldierToArmory(sol);
-            armory.OperationToArmory(InputControl(gun, sol));
+            puts("Желаете использовать имеющееся оружие?\n|1|Да\n|2|Нет");
+            int k;
+            do {
+                scanf("%d", &k);
+            } while (k < 1 || k > 2);
+            Weapon w;
+            if (k == 1) {
+                system("cls");
+                armory.OutputArmory();
+                puts("Введите номер оружия из списка:");
+                int NumOfWeapon;
+                do {
+                    scanf("%d", &NumOfWeapon);
+                } while (NumOfWeapon<1 || NumOfWeapon>armory.GetNweapons());
+                w = armory.weapons.at(NumOfWeapon - 1);
+            }
+            else {
+                w = InputWeapon(InputCompany());
+                armory.WeaponToArmory(w);
+            }
+            puts("Желаете использовать имеющегося солдата ?\n|1|Да\n|2|Нет");
+            do {
+                scanf("%d", &k);
+            } while (k < 1 || k > 2);
+            Soldier s;
+            if (k == 1) {
+                system("cls");
+                armory.OutputArmory();
+                puts("Введите номер солдата из списка:");
+                int NumOfSoldier;
+                do {
+                    scanf("%d", &NumOfSoldier);
+                } while (NumOfSoldier<1 || NumOfSoldier>armory.GetNsoldiers());
+                s = armory.soldiers.at(NumOfSoldier - 1);
+            }
+            else {
+                s = InputSoldier();
+                armory.SoldierToArmory(s);
+            }
+            armory.OperationToArmory(InputControl(w, s));
             puts("Нажмите ENTER для добавления операции в список.");
             _getch();
         }

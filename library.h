@@ -65,8 +65,10 @@ public:
     static int getNumber() {
         return NumWeap;
     }
-    Weapon() {
+    Weapon operator++() {
         NumWeap++;
+    }
+    Weapon() {
     }
     Weapon( Company company) { //конструктор с одним параметром
         NumWeap++;
@@ -99,7 +101,7 @@ public:
         this->rel_year = rel_year;
     }
 };
-int Weapon::NumWeap = -1;
+int Weapon::NumWeap = 0;
 
 class Soldier {
 private:
@@ -113,8 +115,10 @@ public:
     static int getNumber() {
         return NumSold;
     }
-    Soldier() {
+    Soldier operator++() {
         NumSold++;
+    }
+    Soldier() {
     }
     Soldier(string name) {//конструктор с одним параметром
         NumSold++;
@@ -154,7 +158,7 @@ public:
         this->address = address;
     }
 };
-int Soldier::NumSold = -1;
+int Soldier::NumSold = 0;
 
 class Control {
 private:
@@ -231,6 +235,12 @@ public:
     string GetMilitary() {
         return military;
     }
+    int GetNweapons() {
+        return Nweapons;
+    }
+    int GetNsoldiers() {
+        return Nsoldiers;
+    }
     void SetMilitary(string military) {
         this->military = military;
     }
@@ -245,6 +255,14 @@ public:
     void OperationToArmory(Control operation) { // добавление операций контроля
         this->Noperations += 1;
         this->operations.push_back(operation);
+    }
+    void operator+(Soldier& soldier) {
+        this->Nsoldiers += 1;
+        this->soldiers.push_back(soldier);
+    }
+    void operator+(Weapon& weapon) {
+        this->Nweapons += 1;
+        this->weapons.push_back(weapon);
     }
     void OutputArmory() {
         printf("\n\nСписок складского оружия:\nВсего на складе: |%d|",Weapon::getNumber());
@@ -299,7 +317,7 @@ Soldier InputSoldier() { // ввод солдата
     string draft_date;
     string address;
 
-    puts("Введите Фамилия И.О. солдата:");
+    puts("Введите Фамилию солдата:");
     cin >> name;
     clean();
     do {
