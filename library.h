@@ -4,6 +4,7 @@
 #include <string.h>
 #include <conio.h>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 // Классы
@@ -165,6 +166,7 @@ private:
     string operation;
     string date;
     static int NumOper;
+    friend bool CompareDates(const string& date1, const string& date2);
 public:
     static const int LEN = 30;
     static const int Date = 11;
@@ -280,6 +282,73 @@ public:
         puts("");
     }
 };
+
+class OrderingOperations {
+private:
+    vector<Control> operations;
+    //Дружественная функция для сортировки дат операций на складе
+    friend void ArmoryToOrder(const Armory& operation, OrderingOperations& operations);
+    void Sort() {
+        int flag;
+        Control temp;
+        char* str1 = (char*)calloc(20, sizeof(char));
+        char* str2 = (char*)calloc(20, sizeof(char));
+        for (int k = 0; k < operations.size() - 1; k++) {
+            for (int i = 0; i < operations.size() - 1; i++) {
+                flag = 1;
+                strcpy(str1, operations.at(i).GetDate().c_str());
+                strcpy(str2, operations.at(i + 1).GetDate().c_str());
+                for (int j = 6; j <= 9 && flag == 1; j++) {
+                    if (str2[j] > str1[j]) {
+                        flag = 0;
+                    }
+                    if (str2[j] < str1[j]) {
+                        flag = 2;
+                    }
+                }
+                for (int j = 3; j <= 4 && flag == 1; j++) {
+                    if (str2[j] > str1[j]) {
+                        flag = 0;
+                    }
+                    if (str2[j] < str1[j]) {
+                        flag = 2;
+                    }
+                }
+                for (int j = 0; j <= 1 && flag == 1; j++) {
+                    if (str2[j] > str1[j]) {
+                        flag = 0;
+                    }
+                    if (str2[j] < str1[j]) {
+                        flag = 2;
+                    }
+                }
+                if (flag == 2) {
+                    temp = operations.at(i);
+                    operations.at(i) = operations.at(i + 1);
+                    operations.at(i + 1) = temp;
+                }
+            }
+        }
+    }
+public:
+    OrderingOperations() {
+    }
+    void OutputOrder() {
+        for (int i = 0; i < operations.size(); i++) {
+            cout << "|" << i + 1 << "|" << "Тип операции: " << operations.at(i).GetOperation() << " Дата операции: " << operations.at(i).GetDate() << " Солдат: " << operations.at(i).soldier.GetName() << " Оружие: " << operations.at(i).weapon.GetName() << "\n";
+        }
+        operations.clear();
+        puts("Нажмите ENTER для возвращения в меню.");
+    }
+};
+
+// Реализация дружественной функции
+void ArmoryToOrder(const Armory& source, OrderingOperations& destination) {
+    for (int i = 0; i < source.operations.size(); i++) {
+        destination.operations.push_back(source.operations.at(i));
+    }
+    destination.Sort();
+}
 
 void clean()  //Очистка потока
 {

@@ -15,16 +15,17 @@ int main()
     Soldier soldier = InputSoldier();
     Control operation = InputControl(weapon, soldier);
     Armory armory = InputArmory(weapon, soldier, operation);
+    OrderingOperations order;
     int exit = 0;
     do {
         system("cls");
         puts("Создан оружейный склад.");
         int choice;
         do {
-            printf("Выберите действие:\n |1|Вывести оружейный склад\n |2|Добавить солдата\n |3|Добавить оружие\n |4|Добавить выдачу/сдачу оружия\n |5|Завершение программы\nВаш выбор: ");
+            printf("Выберите действие:\n |1|Вывести оружейный склад\n |2|Добавить солдата\n |3|Добавить оружие\n |4|Добавить выдачу/сдачу оружия\n |5|Отсортировать операции\n |6|Завершение программы\nВаш выбор: ");
             scanf("%d", &choice);
             clean();
-        } while (choice < 1 || choice >5);
+        } while (choice < 1 || choice > 6);
         if (choice == 1) {
             armory.OutputArmory();
             puts("Нажмите любую клавишу для продолжения...");
@@ -46,6 +47,7 @@ int main()
             int k;
             do {
                 scanf("%d", &k);
+                clean();
             } while (k < 1 || k > 2);
             Weapon w;
             if (k == 1) {
@@ -55,6 +57,7 @@ int main()
                 int NumOfWeapon;
                 do {
                     scanf("%d", &NumOfWeapon);
+                    clean();
                 } while (NumOfWeapon<1 || NumOfWeapon>armory.GetNweapons());
                 w = armory.weapons.at(NumOfWeapon - 1);
             }
@@ -74,6 +77,7 @@ int main()
                 int NumOfSoldier;
                 do {
                     scanf("%d", &NumOfSoldier);
+                    clean();
                 } while (NumOfSoldier<1 || NumOfSoldier>armory.GetNsoldiers());
                 s = armory.soldiers.at(NumOfSoldier - 1);
             }
@@ -86,6 +90,12 @@ int main()
             _getch();
         }
         if (choice == 5) {
+            system("cls");
+            ArmoryToOrder(armory, order);
+            order.OutputOrder();
+            _getch();
+        }
+        if (choice == 6) {
             int yesno;
             do {
                 printf("Вы уверены, что хотите выйти?\n|1|Да\n|2|Нет\nВаш выбор: ");
