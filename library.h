@@ -286,6 +286,7 @@ public:
 class OrderingOperations {
 private:
     vector<Control> operations;
+    //Разумное использование дружественной функции
     //Дружественная функция для сортировки дат операций на складе
     friend void ArmoryToOrder(const Armory& operation, OrderingOperations& operations);
     void Sort() {
