@@ -123,17 +123,10 @@ int main()
                     platoon.AddSoldier(id, sold);
                 }
                 if (n == 2) {
-                    int troop = platoon.GetNtroop();
-                    if (troop < 0) {
-                        system("cls");
-                        platoon.OutputPlatoon();
-                        puts("\nНажмите ENTER для возвращения в меню.");
-                        _getch();
-                    }
-                    else {
-                        puts("Роты не сформированы.Нажмите ENTER для возвращения в меню.");
-                        _getch();
-                    }
+                    system("cls");
+                    platoon.OutputPlatoon();
+                    puts("\nНажмите ENTER для возвращения в меню.");
+                    _getch();
                 }
             } while (n != 3);
         }
