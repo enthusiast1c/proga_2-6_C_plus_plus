@@ -66,6 +66,7 @@ public:
     static int getNumber() {
         return NumWeap;
     }
+    //Перегрузка оператора
     Weapon operator++() {
         NumWeap++;
     }
@@ -116,12 +117,13 @@ public:
     static int getNumber() {
         return NumSold;
     }
+    //Перегрузка оператора
     Soldier operator++() {
         NumSold++;
     }
     Soldier() {
     }
-    Soldier(string name) {
+    Soldier(string name) {//Инструкция throw
         this->name = name;
         for (int i = 0; i < name.length(); i++) {
             if (name[i] >= '0' && name[i] <= '9') {
