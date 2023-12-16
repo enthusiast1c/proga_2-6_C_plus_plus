@@ -121,9 +121,13 @@ public:
     }
     Soldier() {
     }
-    Soldier(string name) {//конструктор с одним параметром
-        NumSold++;
+    Soldier(string name) {
         this->name = name;
+        for (int i = 0; i < name.length(); i++) {
+            if (name[i] >= '0' && name[i] <= '9') {
+                throw invalid_argument("Неккоректный формат входных данных\n");
+            }
+        }
         draft_date = "11.12.1345";
         address = "Летная, 13";
     }
@@ -166,7 +170,6 @@ private:
     string operation;
     string date;
     static int NumOper;
-    friend bool CompareDates(const string& date1, const string& date2);
 public:
     static const int LEN = 30;
     static const int Date = 11;
@@ -283,10 +286,10 @@ public:
     }
 };
 
+//Разумное использование дружественной функции
 class OrderingOperations {
 private:
     vector<Control> operations;
-    //Разумное использование дружественной функции
     //Дружественная функция для сортировки дат операций на складе
     friend void ArmoryToOrder(const Armory& operation, OrderingOperations& operations);
     void Sort() {
@@ -351,13 +354,61 @@ void ArmoryToOrder(const Armory& source, OrderingOperations& destination) {
     destination.Sort();
 }
 
+//Работа с двумерным массивом
+class Platoon {
+private:
+    int Ntroop;
+    string index;
+    vector<int>NumSoldOfTroop;
+    vector<vector<Soldier>> soldiers;
+    void SetIndex(string index) {
+        this->index = index;
+    }
+public:
+    Platoon() {
+        string index;
+        system("cls");
+        puts("Введите обозначение взвода:");
+        cin >> index;
+        SetIndex(index);
+    }
+    ~Platoon() {}
+    void AddSoldier(int id, Soldier soldier) {
+        if (soldiers.size() == id) {
+            vector<Soldier> sold;
+            sold.push_back(soldier);
+            soldiers.push_back(sold);
+        }
+        else {
+            soldiers.at(id).push_back(soldier);
+        }
+    }
+    int GetNtroop() {
+        return soldiers.size();
+    }
+    int GetSize(int i) {
+        return soldiers.at(i).size();
+    }
+    string GetIndex() {
+        return index;
+    }
+    void OutputPlatoon() {
+        cout << "Взвод <<" << this->GetIndex() << ">>\n";
+        for (int i = 0; i < soldiers.size(); i++) {
+            cout << "\n\nВ (" << i + 1 << ") роте прикомандированы следующие солдаты:";
+            for (int j = 0; j < soldiers.at(i).size(); j++) {
+                cout << "\n|" << j + 1 << "|ФИО: " << this->soldiers.at(i).at(j).GetName() << "\n   Дата призыва: " << this->soldiers.at(i).at(j).GetDate() + "\n   Прописка по адресу: " << this->soldiers.at(i).at(j).GetAddress();
+            }
+        }
+    }
+};
+
 void clean()  //Очистка потока
 {
     while (getchar() != '\n');
 }
 
-// Основные функции
-//Ввод классов
+// Основные функции.Ввод классов
 Company InputCompany() {// ввод компании
     int LEN = Company::LEN;
     int Date = Company::Date;
