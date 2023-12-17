@@ -37,10 +37,27 @@ int main()
             _getch();
         }
         else if (choice == 3) {
-            Weapon gun = InputWeapon(InputCompany());
-            armory + gun;
-            puts("Нажмите ENTER для добавления снаряжения в список.");
-            _getch();
+            system("cls");
+            printf("Добавление снаряжения:\n|1|Добавить оружие\n|2|Добавить модификацию\nВаш выбор: ");
+            int k;
+            do {
+                scanf("%d", &k);
+                clean();
+            } while (k < 1 || k > 2);
+            if (k == 1) {
+                Weapon gun = InputWeapon(InputCompany());
+                armory + gun;
+                puts("Нажмите ENTER для добавления снаряжения в список.");
+                _getch();
+            }
+            else {
+                Weapon gun = InputWeapon(InputCompany());
+                WeaponMode weaponmode;
+                weaponmode = gun;
+                armory.WeaponModeToArmory(weaponmode);
+                puts("Нажмите ENTER для добавления снаряжения в список.");
+                _getch();
+            }
         }
         else if (choice == 4) {
             printf("\nЖелаете использовать имеющееся оружие?\n|1|Да\n|2|Нет\nВаш выбор: ");
@@ -58,7 +75,7 @@ int main()
                 do {
                     scanf("%d", &NumOfWeapon);
                     clean();
-                } while (NumOfWeapon<1 || NumOfWeapon>armory.GetNweapons());
+                } while (NumOfWeapon<1 || NumOfWeapon>(armory.GetNweapons()- WeaponMode::GetCountMode()));
                 w = armory.weapons.at(NumOfWeapon - 1);
             }
             else {

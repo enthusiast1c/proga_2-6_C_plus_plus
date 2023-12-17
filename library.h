@@ -102,8 +102,58 @@ public:
     void SetYear(int rel_year) {
         this->rel_year = rel_year;
     }
+    void SetCompany(Company company) {
+        this->company = company;
+    }
+    void Output() {
+        cout << "Название: " << name << "\n   Год выпуска: " << rel_year << "\n   Компания: " << company.GetName() << "\n   Дата основания: " << company.GetDate() << endl;
+    }
 };
 int Weapon::NumWeap = 0;
+
+//Производный класс от класса Weapon
+class WeaponMode : protected Weapon {
+private: 
+    vector<string> mods;
+    static int NumWeapMods;
+public:
+    WeaponMode(string name, Company company, int rel_year, vector<string> mods) : Weapon(name, company, rel_year) {
+        NumWeapMods++;
+        this->mods = mods;
+    }
+    WeaponMode(string name, Company company, int rel_year) : Weapon(name, company, rel_year) {
+        NumWeapMods++;
+        this->mods = mods;
+    }
+    WeaponMode() {
+        NumWeapMods++;
+    }
+    WeaponMode& operator=(Weapon& weapon) {
+        SetYear(weapon.GetYear());
+        SetName(weapon.GetName());
+        SetCompany(weapon.company);
+        return *this;
+    }
+    void AddMode(string mode) {
+        mods.push_back(mode);
+    }
+    void DeleteMode(int i) {
+        for (i; i < mods.size() - 1; i++) {
+            mods.at(i) = mods.at(i + 1);
+        }
+        mods.pop_back();
+    }
+    void OutputMode() {
+        Weapon::Output();
+        for (int i = 0; i < mods.size(); i++) {
+            cout << "Модификация |" << mods.at(i) << "|" << endl;
+        }
+    }
+    static int GetCountMode() {
+        return NumWeapMods;
+    }
+};
+int WeaponMode::NumWeapMods = 0;
 
 class Soldier {
 private:
@@ -224,6 +274,7 @@ public:
     vector <Weapon> weapons;
     vector <Soldier> soldiers;
     vector <Control> operations;
+    vector <WeaponMode> weaponmods;
     Armory(){//конструктор без параметров
     }
     Armory(Weapon weapon, Soldier soldier, Control operation, string military) { //конструктор с параметрами
@@ -263,6 +314,10 @@ public:
         this->Noperations += 1;
         this->operations.push_back(operation);
     }
+    void WeaponModeToArmory(WeaponMode weaponmode) {
+        this->Nweapons += 1;
+        this->weaponmods.push_back(weaponmode);
+    }
     void operator+(Soldier& soldier) {
         this->Nsoldiers += 1;
         this->soldiers.push_back(soldier);
@@ -272,9 +327,17 @@ public:
         this->weapons.push_back(weapon);
     }
     void OutputArmory() {
-        printf("\n\nСписок складского оружия:\nВсего на складе: |%d|",Weapon::getNumber());
-        for (int i = 0, j = 1; i < this->Nweapons; i++) {
-            cout << "\n|" << j++ << "|Название: " << this->weapons.at(i).GetName() << "\n   Год выпуска: " << this->weapons.at(i).GetYear() << "\n   Компания: " << this->weapons.at(i).company.GetName() << "\n   Дата основания: " << this->weapons.at(i).company.GetDate();
+        printf("\n\nСписок складского оружия:\nВсего на складе: |%d|\n",Weapon::getNumber() - WeaponMode::GetCountMode());
+        for (int i = 0; i < Weapon::getNumber() - WeaponMode::GetCountMode(); i++) {
+            cout << "|" << (i + 1) << "|";
+            this->weapons.at(i).Output();
+        }
+        printf("\nСписок складской модификации:\nВсего на складе: |%d|\n", WeaponMode::GetCountMode());
+        if (WeaponMode::GetCountMode() != 0) {
+            for (int i = 0; i < WeaponMode::GetCountMode(); i++) {
+                cout << "|" << (i + 1) << "|";
+                this->weaponmods.at(i).OutputMode();
+            }
         }
         printf("\n\nСписок призванных солдат:\nВсего на складе: |%d|", Soldier::getNumber());
         for (int i = 0, j = 1; i < this->Nsoldiers; i++) {
@@ -461,7 +524,7 @@ Weapon InputWeapon(Company company) { // ввод оружия
     int rel_year;
     string name;
 
-    puts("Введите модель оружия:");
+    puts("Введите модель оружия (модификации):");
     cin >> name;
     clean();
     puts("Введите год выпуска:");
