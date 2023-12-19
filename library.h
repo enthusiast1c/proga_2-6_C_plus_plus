@@ -8,7 +8,20 @@
 using namespace std;
 
 // Классы
-class Company {
+//Разумное использование абстрактного класса
+class AbstractCompany {
+public:
+    virtual string GetName() = 0;
+    virtual string GetDate() = 0;
+    virtual string GetAddress() = 0;
+    virtual void SetName(string name) = 0;
+    virtual void SetDate(string found_date) = 0;
+    virtual void SetAddress(string address) = 0;
+};
+
+//Разумное использование шаблона класса
+template <class D>
+class Company : AbstractCompany{
 private:
     string name;
     string found_date;
@@ -18,7 +31,7 @@ public:
     static const int Date = 11;
     Company() {//конструктор без параметров
     }
-    Company(string name, string found_date, string address) { //конструктор с параметрами
+    Company(string name, D found_date, string address) { //конструктор с параметрами
         if (name.empty() || address.empty()) {
             exit(-1);
         }
@@ -43,7 +56,7 @@ public:
     string GetAddress() {
         return address;
     }
-    string SetName(string name) {
+    void SetName(string name) {
         this->name = name;
     }
     void SetDate(string found_date) {
@@ -62,22 +75,25 @@ private:
 public:
     static const int LEN = 30;
     static const int Date = 11;
-    class Company company;
+    class Company<string> company;
     static int getNumber() {
         return NumWeap;
     }
     //Перегрузка оператора
-    Weapon operator++() {
+    void operator++() {
         NumWeap++;
+    }
+    void operator--() {
+        NumWeap--;
     }
     Weapon() {
     }
-    Weapon( Company company) { //конструктор с одним параметром
+    Weapon( Company<string> company) { //конструктор с одним параметром
         NumWeap++;
         this->rel_year = 2000;
         this->company = company;
     }
-    Weapon(string name, Company company, int rel_year) {//конструктор с параметрами
+    Weapon(string name, Company<string> company, int rel_year) {//конструктор с параметрами
         NumWeap++;
         if (name.empty() || rel_year < 1000) {
             exit(-1);
@@ -90,7 +106,7 @@ public:
     }
     ~Weapon() {//деструктор
     }
-    string GetName() {
+    string& GetName() {
         return name;
     }
     int GetYear() {
@@ -102,32 +118,38 @@ public:
     void SetYear(int rel_year) {
         this->rel_year = rel_year;
     }
-    void SetCompany(Company company) {
+    void SetCompany(Company<string> company) {
         this->company = company;
     }
-    void Output() {
-        cout << "Название: " << name << "\n   Год выпуска: " << rel_year << "\n   Компания: " << company.GetName() << "\n   Дата основания: " << company.GetDate() << endl;
+    virtual void Output() {
+        cout << "Название: " << this->name << "\n   Год выпуска: " << rel_year << "\n   Компания: " << company.GetName() << "\n   Дата основания: " << company.GetDate() << endl;
     }
 };
 int Weapon::NumWeap = 0;
 
 //Производный класс от класса Weapon
+//Модификатор  protected
 class WeaponMode : protected Weapon {
 private: 
     vector<string> mods;
     static int NumWeapMods;
 public:
-    WeaponMode(string name, Company company, int rel_year, vector<string> mods) : Weapon(name, company, rel_year) {
+    //Вызов конструктора базового класса в производном классе
+    WeaponMode(string name, Company<string> company, int rel_year, vector<string> mods) : Weapon(name, company, rel_year) {
         NumWeapMods++;
         this->mods = mods;
     }
-    WeaponMode(string name, Company company, int rel_year) : Weapon(name, company, rel_year) {
+    WeaponMode(string name, Company<string> company, int rel_year) : Weapon(name, company, rel_year) {
         NumWeapMods++;
         this->mods = mods;
     }
     WeaponMode() {
         NumWeapMods++;
     }
+    void operator--() {
+        NumWeapMods--;
+    }
+    //Перегрузка оператора присвоения
     WeaponMode& operator=(Weapon& weapon) {
         SetYear(weapon.GetYear());
         SetName(weapon.GetName());
@@ -143,10 +165,11 @@ public:
         }
         mods.pop_back();
     }
-    void OutputMode() {
+    //Перегрузка метода базового класса
+    void Output() {
         Weapon::Output();
         for (int i = 0; i < mods.size(); i++) {
-            cout << "Модификация |" << mods.at(i) << "|" << endl;
+            cout << "   Модификация <" << mods.at(i) << ">" << endl;
         }
     }
     static int GetCountMode() {
@@ -336,10 +359,10 @@ public:
         if (WeaponMode::GetCountMode() != 0) {
             for (int i = 0; i < WeaponMode::GetCountMode(); i++) {
                 cout << "|" << (i + 1) << "|";
-                this->weaponmods.at(i).OutputMode();
+                this->weaponmods.at(i).Output();
             }
         }
-        printf("\n\nСписок призванных солдат:\nВсего на складе: |%d|", Soldier::getNumber());
+        printf("\nСписок призванных солдат:\nВсего на складе: |%d|", Soldier::getNumber());
         for (int i = 0, j = 1; i < this->Nsoldiers; i++) {
             cout << "\n|" << j++ << "|ФИО: " << this->soldiers.at(i).GetName() << "\n   Дата призыва: " << this->soldiers.at(i).GetDate() + "\n   Прописка по адресу: " << this->soldiers.at(i).GetAddress();
         }
@@ -474,9 +497,9 @@ void clean()  //Очистка потока
 }
 
 // Основные функции.Ввод классов
-Company InputCompany() {// ввод компании
-    int LEN = Company::LEN;
-    int Date = Company::Date;
+Company<string> InputCompany() {// ввод компании
+    int LEN = Company<string>::LEN;
+    int Date = Company<string>::Date;
     string name;
     string found_date;
     string address;
@@ -493,7 +516,7 @@ Company InputCompany() {// ввод компании
     puts("Введите адрес компании:");
     cin >> address;
     clean();
-    return Company(name, found_date, address);
+    return Company<string>(name, found_date, address);
 }
 
 Soldier InputSoldier() { // ввод солдата 
@@ -518,13 +541,13 @@ Soldier InputSoldier() { // ввод солдата
     return Soldier(name, draft_date, address);
 }
 
-Weapon InputWeapon(Company company) { // ввод оружия
+Weapon InputWeapon(Company<string> company) { // ввод оружия
     int LEN = Weapon::LEN;
     int Date = Weapon::Date;
     int rel_year;
     string name;
 
-    puts("Введите модель оружия (модификации):");
+    puts("Введите модель оружия:");
     cin >> name;
     clean();
     puts("Введите год выпуска:");

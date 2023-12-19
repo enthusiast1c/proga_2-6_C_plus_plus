@@ -10,7 +10,7 @@ int main()
     setlocale(LC_ALL, "rus");
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    Company company = InputCompany();
+    Company<string> company = InputCompany();
     Weapon weapon = InputWeapon(company);
     Soldier soldier = InputSoldier();
     Control operation = InputControl(weapon, soldier);
@@ -22,10 +22,10 @@ int main()
         puts("Создан оружейный склад.");
         int choice;
         do {
-            printf("Выберите действие:\n |1|Вывести оружейный склад\n |2|Добавить солдата\n |3|Добавить оружие\n |4|Добавить выдачу/сдачу оружия\n |5|Отсортировать операции\n |6|Организация взвода\n |7|Конструкция try-catch\n |8|Завершение программы\nВаш выбор: ");
+            printf("Выберите действие:\n |1|Вывести оружейный склад\n |2|Добавить солдата\n |3|Добавить оружие\n |4|Добавить выдачу/сдачу оружия\n |5|Отсортировать операции\n |6|Организация взвода\n |7|Конструкция try-catch\n |8|Тестирование виртуальной функции\n |9|Завершение программы\nВаш выбор: ");
             scanf("%d", &choice);
             clean();
-        } while (choice < 1 || choice > 8);
+        } while (choice < 1 || choice > 9);
         if (choice == 1) {
             armory.OutputArmory();
             puts("Нажмите любую клавишу для продолжения...");
@@ -38,26 +38,40 @@ int main()
         }
         else if (choice == 3) {
             system("cls");
-            printf("Добавление снаряжения:\n|1|Добавить оружие\n|2|Добавить модификацию\nВаш выбор: ");
             int k;
             do {
-                scanf("%d", &k);
-                clean();
-            } while (k < 1 || k > 2);
-            if (k == 1) {
-                Weapon gun = InputWeapon(InputCompany());
-                armory + gun;
-                puts("Нажмите ENTER для добавления снаряжения в список.");
-                _getch();
-            }
-            else {
-                Weapon gun = InputWeapon(InputCompany());
-                WeaponMode weaponmode;
-                weaponmode = gun;
-                armory.WeaponModeToArmory(weaponmode);
-                puts("Нажмите ENTER для добавления снаряжения в список.");
-                _getch();
-            }
+                printf("Добавление снаряжения:\n|1|Добавить оружие\n|2|Добавить оружие с модификацией\n|3|Вернуться назад\nВаш выбор: ");
+                do {
+                    scanf("%d", &k);
+                    clean();
+                } while (k < 1 || k > 3);
+                if (k == 1) {
+                    Weapon gun = InputWeapon(InputCompany());
+                    armory + gun;
+                    puts("Нажмите ENTER для добавления снаряжения в список.");
+                    _getch();
+                }
+                else if (k == 2) {
+                    Weapon gun = InputWeapon(InputCompany());
+                    WeaponMode weaponmode;
+                    weaponmode = gun;
+                    printf("\nВведите количество модификаций (не более 2)\nВаш выбор: ");
+                    int k;
+                    do {
+                        scanf("%d", &k);
+                    } while (k < 1 || k > 2);
+                    string str;
+                    for (int i = 0; i < k; i++) {
+                        cout << "Введите " << i + 1 << " модификацию:" << endl;
+                        cin >> str;
+                        weaponmode.AddMode(str);
+                    }
+                    armory.WeaponModeToArmory(weaponmode);
+                    puts("Нажмите ENTER для добавления снаряжения в список.");
+                    _getch();
+                    system("cls");
+                }
+            } while (k != 3);
         }
         else if (choice == 4) {
             printf("\nЖелаете использовать имеющееся оружие?\n|1|Да\n|2|Нет\nВаш выбор: ");
@@ -159,6 +173,30 @@ int main()
             _getch();
         }
         else if (choice == 8) {
+            system("cls");
+            puts("Тестирование виртуальной функции.");
+            Weapon* weap = &weapon;
+            WeaponMode wmod;
+            wmod = weapon;
+            printf("Введите количество модификаций (не более 2)\nВаш выбор: ");
+            int k;
+            do {
+                scanf("%d", &k);
+            } while (k < 1 || k > 2);
+            string str;
+            for (int i = 0; i < k; i++) {
+                cout << "Введите " << i + 1 << " модификацию:" << endl;
+                cin >> str;
+                wmod.AddMode(str);
+            }
+            WeaponMode* wmode1 = &wmod;
+            weap->Output();
+            wmode1->Output();
+            --wmod;
+            puts("Нажмите ENTER для возвращения в меню.");
+            _getch();
+        }
+        else if (choice == 9) {
             int yesno;
             do {
                 printf("Вы уверены, что хотите выйти?\n|1|Да\n|2|Нет\nВаш выбор: ");
