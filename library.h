@@ -24,7 +24,7 @@ template <class D>
 class Company : AbstractCompany{
 private:
     string name;
-    string found_date;
+    D found_date;
     string address;
 public:
     static const int LEN = 30;
