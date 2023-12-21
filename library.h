@@ -128,8 +128,7 @@ public:
 int Weapon::NumWeap = 0;
 
 //Производный класс от класса Weapon
-//Модификатор  protected
-class WeaponMode : protected Weapon {
+class WeaponMode : public Weapon {
 private: 
     vector<string> mods;
     static int NumWeapMods;
@@ -141,7 +140,6 @@ public:
     }
     WeaponMode(string name, Company<string> company, int rel_year) : Weapon(name, company, rel_year) {
         NumWeapMods++;
-        this->mods = mods;
     }
     WeaponMode() {
         NumWeapMods++;
@@ -340,6 +338,17 @@ public:
     void WeaponModeToArmory(WeaponMode weaponmode) {
         this->Nweapons += 1;
         this->weaponmods.push_back(weaponmode);
+    }
+    //Сортировка оружия по году выпуска
+    void SortWeapon() {
+        cout << "Выполнение сортировки оружия" << endl;
+        sort(weapons.begin(), weapons.end(), [](Weapon& weap, Weapon& gun) {
+            return weap.GetYear() > gun.GetYear();
+            });
+        cout << "Выполнение сортировки оружия с модификацией" << endl;
+        sort(weaponmods.begin(), weaponmods.end(), [](WeaponMode& weapon, WeaponMode& mode) {
+            return weapon.GetYear() > mode.GetYear();
+            });
     }
     void operator+(Soldier& soldier) {
         this->Nsoldiers += 1;
