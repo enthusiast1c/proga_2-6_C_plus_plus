@@ -350,6 +350,26 @@ public:
             return weapon.GetYear() > mode.GetYear();
             });
     }
+    //Поиск оружия,оружия с модификацией по названию
+    int SearchWeapon(const string& name) {
+        for (int i = 0; i < weapons.size(); i++) {
+            if (weapons.at(i).GetName() == name) {
+                cout << "Найденное оружие по запросу: " << endl;
+                weapons.at(i).Output();
+                return 1;
+            }
+        }
+        for (int i = 0; i < weaponmods.size(); i++) {
+            if (weaponmods.at(i).GetName() == name) {
+                cout << "Найденное оружие с модификацией по запросу" << endl;
+                weaponmods.at(i).Output();
+                return 1;
+            }
+        }
+        cout << "Оружие с таким названием отсутсвтует" << endl;
+        return -1;
+    }
+
     void operator+(Soldier& soldier) {
         this->Nsoldiers += 1;
         this->soldiers.push_back(soldier);

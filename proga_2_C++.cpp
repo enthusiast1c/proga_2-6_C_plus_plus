@@ -50,6 +50,7 @@ int main()
                     armory + gun;
                     puts("Нажмите ENTER для добавления снаряжения в список.");
                     _getch();
+                    system("cls");
                 }
                 else if (k == 2) {
                     Weapon gun = InputWeapon(InputCompany());
@@ -209,6 +210,16 @@ int main()
                     armory.SortWeapon();
                     armory.OutputArmory();
                     cout << "Завершение сортировки.Нажмите ENTER для возвращения в меню." << endl;
+                    _getch();
+                }
+                if (n == 2) {
+                    cout << "Введите название для поиска: ";
+                    string str;
+                    do {
+                        cin >> str;
+                    } while (str.empty());
+                    armory.SearchWeapon(str);
+                    cout << "Завершение поиска.Нажмите ENTER для возвращения в меню." << endl;
                     _getch();
                 }
             } while (n != 3);
